@@ -37,6 +37,7 @@ public class OrderFragment extends BaseFragment {
     RootLayout rootLayout;
 
     private CommomViewPagerAdapter viewPagerAdapter;
+
     /**
      * 开始时间
      */
