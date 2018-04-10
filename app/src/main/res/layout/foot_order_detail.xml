@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line" />
+
+    <TextView
+        android:id="@+id/tv_pay_count_money"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@color/white"
+        android:gravity="center_vertical|right"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="实付款：￥0.0"
+        android:textColor="@color/color_ff9600"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

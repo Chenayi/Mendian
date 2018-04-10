@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <!--数据库名-->
+    <dbname value="yaoxiaoer" />
+
+    <!--数据库版本-->
+    <version value="1" />
+
+    <list>
+        <mapping class="com.yaoxiaoer.mendian.mvp.entity.User" />
+    </list>
+
+    <storage value="external" />
+
+</litepal>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">药小二(门店版)</string>
+    <string name="connect_time_out">请求失败，连接服务器超时</string>
+    <string name="no_net_work">请求失败，请检查网络</string>
+    <string name="connect_fail">连接失败</string>
+</resources>

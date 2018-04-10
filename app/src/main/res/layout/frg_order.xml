@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yaoxiaoer.mendian.widget.RootLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:isShowLeftIcon="false"
+    app:titleBarTitle="订单"
+    app:titleBarRightIcon="@mipmap/order_option"
+    android:id="@+id/root_layout">
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/tl"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="1dp"
+        app:tl_indicator_color="@color/colorPrimary"
+        app:tl_indicator_height="4dp"
+        app:tl_indicator_width="24dp"
+        app:tl_textSelectColor="@color/colorPrimary"
+        app:tl_textUnselectColor="#888"
+        app:tl_textsize="14sp"
+        android:background="@color/white"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</com.yaoxiaoer.mendian.widget.RootLayout>

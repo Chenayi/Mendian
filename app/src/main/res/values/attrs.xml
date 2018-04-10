@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RootLayout">
+        <attr name="titleBarColor" format="color"/>
+        <attr name="titleBarTitleColor" format="color"/>
+        <attr name="titleBarHeight" format="dimension"/>
+        <attr name="titleBarTitle" format="string"/>
+        <attr name="titleBarLeftIcon" format="reference"/>
+        <attr name="titleBarRightIcon" format="reference"/>
+        <attr name="titleBarRightText" format="string"/>
+        <attr name="titleBarRightTextColor" format="color"/>
+        <attr name="isShowLeftIcon" format="boolean"/>
+        <attr name="isShowRightText" format="boolean"/>
+        <attr name="isShowRightIcon" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="SplashScanView">
+        <attr name="size" format="dimension"/>
+        <attr name="scanLineHeight" format="dimension"/>
+        <attr name="duration" format="integer"/>
+        <attr name="repeatCount" format="integer"/>
+        <attr name="startLocation" format="enum">
+            <enum name="top" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="LoginUserView">
+        <attr name="marginTop" format="dimension"/>
+    </declare-styleable>
+</resources>

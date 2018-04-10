@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_username"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_below="@+id/iv_logo"
+        android:layout_marginTop="200dp"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tran"
+            android:hint="输入用户名"
+            android:imeOptions="actionNext"
+            android:lines="1"
+            android:paddingLeft="44dp"
+            android:paddingRight="52dp"
+            android:singleLine="true"
+            android:textColorHint="@color/color_hint"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:layout_width="11dp"
+            android:layout_height="17dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/username_icon" />
+
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@mipmap/arrow_down"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rl_username"
+        android:background="@color/color_line" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_user_names"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_username"
+        android:layout_marginTop="1dp"
+        android:visibility="gone" />
+</RelativeLayout>
