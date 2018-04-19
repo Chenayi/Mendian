@@ -72,7 +72,7 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessPresenter> implem
         isFromOrder = extras.getBoolean("isFromOrder");
 
         //语音播报
-        mPresenter.playSpeech("药小二到账" + mPayResultEntity.orderPrice + "元");
+        //mPresenter.playSpeech("药小二到账" + mPayResultEntity.orderPrice + "元");
 
         if (!isFromOrder) {
             tvOrderCode.setVisibility(View.GONE);
