@@ -134,6 +134,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiverPushNewOrderEvent(PushOrderEvent pushEvent) {
+        //震动提醒
+        mPresenter.vibrator();
         //语音播报
         //mPresenter.playSpeech("收到一个新订单");
         SPUtils.getInstance().put(C.NEW_ORDER, true);

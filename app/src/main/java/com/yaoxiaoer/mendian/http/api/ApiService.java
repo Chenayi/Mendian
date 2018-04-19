@@ -17,7 +17,11 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
@@ -28,56 +32,70 @@ import retrofit2.http.Url;
  */
 
 public interface ApiService {
-    @GET("queryAllordersListapp.shtml")
-    Observable<BaseResponse<OrderEntity>> requestOrders(@QueryMap Map<String, Object> params);
+    @FormUrlEncoded
+    @POST("queryAllordersListapp.shtml")
+    Observable<BaseResponse<OrderEntity>> requestOrders(@FieldMap Map<String, Object> params);
 
-    @GET("applogin.shtml")
-    Observable<BaseResponse<UserEntity>> login(@Query("userName") String userName, @Query("password") String password);
+    @FormUrlEncoded
+    @POST("applogin.shtml")
+    Observable<BaseResponse<UserEntity>> login(@Field("userName") String userName, @Field("password") String password);
 
-    @GET("indexapp.shtml")
-    Observable<BaseResponse<HomeEntity>> requestHomes(@Query("userId") long userId, @Query("randomNum") String randomNum);
+    @FormUrlEncoded
+    @POST("indexapp.shtml")
+    Observable<BaseResponse<HomeEntity>> requestHomes(@Field("userId") long userId, @Field("randomNum") String randomNum);
 
-    @GET("orderDetailapp.shtml")
+    @FormUrlEncoded
+    @POST("orderDetailapp.shtml")
     Observable<BaseResponse<OrderDetailEntity>> requestOrderDetail(
-            @Query("userId") long userId, @Query("randomNum") String randomNum, @Query("orderId") int orderId);
+            @Field("userId") long userId, @Field("randomNum") String randomNum, @Field("orderId") int orderId);
 
-    @GET("accountListApp.shtml")
-    Observable<BaseResponse<AccountEntity>> requestAccounts(@QueryMap Map<String, Object> params);
+    @FormUrlEncoded
+    @POST("accountListApp.shtml")
+    Observable<BaseResponse<AccountEntity>> requestAccounts(@FieldMap Map<String, Object> params);
 
-    @GET("accountDetailapp.shtml")
+    @FormUrlEncoded
+    @POST("accountDetailapp.shtml")
     Observable<BaseResponse<AccountDetailEntity>> requestAccountDetail(
-            @Query("userId") long userId, @Query("randomNum") String randomNum,
-            @Query("orderId") String orderId);
+            @Field("userId") long userId, @Field("randomNum") String randomNum,
+            @Field("orderId") String orderId);
 
-    @GET("saomapayApp.shtml")
+    @FormUrlEncoded
+    @POST("saomapayApp.shtml")
     Observable<BaseResponse<QrcodeEntity>> requestQrcode(
-            @QueryMap Map<String, Object> params);
+            @FieldMap Map<String, Object> params);
 
-    @GET("noOrdersaomapayApp.shtml")
+    @FormUrlEncoded
+    @POST("noOrdersaomapayApp.shtml")
     Observable<BaseResponse<QrcodeEntity>> requestQrcodeNoOrder(
-            @QueryMap Map<String, Object> params);
+            @FieldMap Map<String, Object> params);
 
-    @GET("fansaopayApp.shtml")
+    @FormUrlEncoded
+    @POST("fansaopayApp.shtml")
     Observable<BaseResponse<PayResultEntity>> requestFansao(
-            @QueryMap Map<String, Object> params);
+            @FieldMap Map<String, Object> params);
 
-    @GET("noOrderfansaopayApp.shtml")
+    @FormUrlEncoded
+    @POST("noOrderfansaopayApp.shtml")
     Observable<BaseResponse<PayResultEntity>> requestFansaoNoOrder(
-            @QueryMap Map<String, Object> params);
+            @FieldMap Map<String, Object> params);
 
-    @GET("queryOrderpayOrnot.shtml")
+    @FormUrlEncoded
+    @POST("queryOrderpayOrnot.shtml")
     Observable<BaseResponse<PayResultEntity>> queryOrderPay(
-            @Query("userId") long userId, @Query("randomNum") String randomNum, @Query("orderId") String orderId);
+            @Field("userId") long userId, @Field("randomNum") String randomNum, @Field("orderId") String orderId);
 
-    @GET("cashPay.shtml")
+    @FormUrlEncoded
+    @POST("cashPay.shtml")
     Observable<BaseResponse<PayResultEntity>> selfDelivery(
-            @Query("userId") long userId, @Query("randomNum") String randomNum, @Query("orderId") String orderId
+            @Field("userId") long userId, @Field("randomNum") String randomNum, @Field("orderId") String orderId
     );
 
-    @GET("queryUseNameApp.shtml")
-    Observable<BaseResponse<CashierEntity>> requestCashier(@Query("userId") long userId, @Query("randomNum") String randomNum);
+    @FormUrlEncoded
+    @POST("queryUseNameApp.shtml")
+    Observable<BaseResponse<CashierEntity>> requestCashier(@Field("userId") long userId, @Field("randomNum") String randomNum);
 
-    @GET("appversion.shtml")
+//    @FormUrlEncoded
+    @POST("appversion.shtml")
     Observable<BaseResponse<ApkInfoEntity>> checkUpgrade();
 
     /**

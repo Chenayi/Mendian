@@ -64,14 +64,22 @@ public class MainPresenter extends BasePresenter<MainContract.View> {
                 });
     }
 
-    public void playSpeech(String msg) {
-        //震动
+    /**
+     * 震动提醒
+     */
+    public void vibrator(){
         long[] patter = {0, 300, 300, 300};
         if (mVibrator == null) {
             mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         }
         mVibrator.vibrate(patter, -1);
+    }
 
+    /**
+     * 语音播报
+     * @param msg
+     */
+    public void playSpeech(String msg) {
         if (mySynthesizer == null) {
             mySynthesizer = SpeechSynthesizer.createSynthesizer(mContext, null);
             //设置发音人
