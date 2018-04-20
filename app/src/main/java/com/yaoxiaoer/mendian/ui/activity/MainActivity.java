@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -152,16 +153,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         mQBadgeView.hide(true);
     }
 
-    @Override
-    public void onBackPressedSupport() {
-        goBack();
+    private void goBack() {
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addCategory(Intent.CATEGORY_HOME);
+        startActivity(i);
     }
 
-    private void goBack() {
-//        Intent setIntent = new Intent(Intent.ACTION_MAIN);
-//        setIntent.addCategory(Intent.CATEGORY_HOME);
-//        startActivity(setIntent);
-        moveTaskToBack(false);
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
