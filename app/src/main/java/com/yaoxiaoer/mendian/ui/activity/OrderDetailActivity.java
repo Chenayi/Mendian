@@ -220,11 +220,11 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         OrderDetailEntity.OrderDetailBean orderDetail = orderDetailEntity.getOrderDetail();
         mOrderPrice = orderDetail.getOrderPrice();
         //订单号
-        if (!TextUtils.isEmpty(orderDetail.getOrderCode())){
+        if (!TextUtils.isEmpty(orderDetail.getOrderCode())) {
             tvOrderCode.setText(orderDetail.getOrderCode());
         }
         //订单来源
-        if (!TextUtils.isEmpty(orderDetail.getOrderSource())){
+        if (!TextUtils.isEmpty(orderDetail.getOrderSource())) {
             tvOrderSource.setText(orderDetail.getOrderSource().equals("0") ? "快速支付" : "微商城");
         }
         //支付方式
@@ -232,16 +232,16 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
             tvPayWay.setText(orderDetail.paymentMethod.equals("1") ? "线上支付" : "线下支付");
         }
         //配送方式
-        if (!TextUtils.isEmpty(orderDetail.getDistributionType())){
+        if (!TextUtils.isEmpty(orderDetail.getDistributionType())) {
             tvDistributionType.setText(orderDetail.getDistributionType().equals("1") ? "快递配送" : "上门自提");
         }
 
         //客户姓名
-        if (!TextUtils.isEmpty(orderDetail.getCustomerName())){
+        if (!TextUtils.isEmpty(orderDetail.getCustomerName())) {
             tvCusName.setText(orderDetail.getCustomerName());
         }
         //手机号码
-        if (!TextUtils.isEmpty(orderDetail.getCustomerPhone())){
+        if (!TextUtils.isEmpty(orderDetail.getCustomerPhone())) {
             tvPhoneNumber.setText(orderDetail.getCustomerPhone());
         }
         //自提地址
@@ -254,6 +254,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
             llPayType.setVisibility(View.VISIBLE);
             tvOrderStatus.setText("订单已完成");
             tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
             if (orderDetail.payType != null) {
                 setPayType(orderDetail.payType);
             }
@@ -264,6 +265,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
             tvOrderStatus.setVisibility(View.VISIBLE);
             tvOrderStatus.setText("订单已取消");
             tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.color_ff552e));
+            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff552e));
             llPayType.setVisibility(View.VISIBLE);
             if (orderDetail.payType != null) {
                 setPayType(orderDetail.payType);
@@ -271,6 +273,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         }
         //未处理
         else {
+            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff9600));
             llBottom.setVisibility(View.VISIBLE);
             tvOrderStatus.setVisibility(View.GONE);
             llPayType.setVisibility(View.GONE);

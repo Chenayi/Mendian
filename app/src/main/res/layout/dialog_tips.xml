@@ -51,8 +51,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="32dp"
             android:text="确定"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
@@ -68,8 +66,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingLeft="32dp"
-            android:paddingRight="16dp"
             android:text="取消"
             android:textColor="@color/color_5"
             android:textSize="16sp" />

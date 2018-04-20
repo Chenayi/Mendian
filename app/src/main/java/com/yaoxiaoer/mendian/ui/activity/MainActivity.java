@@ -158,9 +158,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     private void goBack() {
-        Intent setIntent = new Intent(Intent.ACTION_MAIN);
-        setIntent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(setIntent);
+//        Intent setIntent = new Intent(Intent.ACTION_MAIN);
+//        setIntent.addCategory(Intent.CATEGORY_HOME);
+//        startActivity(setIntent);
+        moveTaskToBack(false);
     }
 
     @Override
