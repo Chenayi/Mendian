@@ -29,10 +29,10 @@ public class HomePresenter extends BasePresenter<HomeContract.View> {
     /**
      * 获取首页数据
      *
-     * @param isHandRefresh
+     * @param isShowLoading
      */
-    public void requestHomeDatas(boolean isHandRefresh) {
-        if (!isHandRefresh) {
+    public void requestHomeDatas(boolean isShowLoading) {
+        if (isShowLoading) {
             mView.showLoading();
         }
         mHttpManager.obtainRetrofitService(ApiService.class)

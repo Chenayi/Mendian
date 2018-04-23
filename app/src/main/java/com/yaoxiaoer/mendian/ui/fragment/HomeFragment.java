@@ -93,10 +93,14 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.requestHomeDatas(true);
+                refreshHomeDatas(false);
             }
         });
-        mPresenter.requestHomeDatas(false);
+        refreshHomeDatas(true);
+    }
+
+    public void refreshHomeDatas(boolean isShowLoading) {
+        mPresenter.requestHomeDatas(isShowLoading);
     }
 
     @Override

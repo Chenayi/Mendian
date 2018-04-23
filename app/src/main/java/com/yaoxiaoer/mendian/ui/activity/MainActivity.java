@@ -92,17 +92,24 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                //订单
-                if (position == 1) {
-                    ((OrderFragment) mVPMainAdapter.getItem(position)).resetOrder();
-                }
-                //收款
-                else if (position == 2) {
-                    ((GatheringFragment) mVPMainAdapter.getItem(position)).resetMoney();
-                }
-                //账目
-                else if (position == 3) {
-                    ((AccountsFragment) mVPMainAdapter.getItem(position)).resetWithRefresh();
+
+                switch (position) {
+                    //首页
+                    case 0:
+                        ((HomeFragment) mVPMainAdapter.getItem(position)).refreshHomeDatas(true);
+                        break;
+                    //订单
+                    case 1:
+                        ((OrderFragment) mVPMainAdapter.getItem(position)).resetOrder();
+                        break;
+                    //收款
+                    case 2:
+                        ((GatheringFragment) mVPMainAdapter.getItem(position)).resetMoney();
+                        break;
+                    //账目
+                    case 3:
+                        ((AccountsFragment) mVPMainAdapter.getItem(position)).resetWithRefresh();
+                        break;
                 }
             }
         });
@@ -145,6 +152,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     private void addBadgeAt(int position, int number) {
         mQBadgeView.setBadgeNumber(number)
+                .setShowShadow(false)
                 .setGravityOffset(24, 4, true)
                 .bindTarget(mBnev.getBottomNavigationItemView(position));
     }
@@ -162,7 +170,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             goBack();
             return true;
         }
