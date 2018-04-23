@@ -11,6 +11,7 @@ import com.yaoxiaoer.mendian.http.api.ApiService;
 import com.yaoxiaoer.mendian.mvp.entity.BaseResponse;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 import com.yaoxiaoer.mendian.C;
+import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
 import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
@@ -56,7 +57,7 @@ public abstract class PayResultPresenter<V extends IView> extends BasePresenter<
                                     protected void onHandleSuccess(PayResultEntity payResultEntity) {
                                         int orderStatus = payResultEntity.orderStatus;
                                         //完成付款
-                                        if (orderStatus == 3) {
+                                        if (orderStatus == Order.ORDER_FINISHED) {
                                             mView.hideLoading();
                                             paySuccess(payResultEntity);
                                             disposable();

@@ -3,8 +3,6 @@ package com.yaoxiaoer.mendian.ui.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
@@ -18,9 +16,7 @@ import com.yaoxiaoer.mendian.ui.dialog.OrderOptionDialog;
 import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
 import com.yaoxiaoer.mendian.widget.RootLayout;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;

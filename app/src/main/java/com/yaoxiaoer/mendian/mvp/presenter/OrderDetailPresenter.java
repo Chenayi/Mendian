@@ -66,6 +66,11 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailContract.View
                 });
     }
 
+    /**
+     * 如果是“未处理”情况下，需要请求一下此接口，因为状态有可能已变为“已完成”
+     *
+     * @param orderId
+     */
     public void requestPayResult(final int orderId) {
         mHttpManager.obtainRetrofitService(ApiService.class)
                 .queryOrderPay(C.USER_ID, Utils.getEncryptRadomNum(), String.valueOf(orderId))
@@ -80,7 +85,7 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailContract.View
                     protected void onHandleSuccess(PayResultEntity payResultEntity) {
                         int orderStatus = payResultEntity.orderStatus;
                         //已完成
-                        if (orderStatus == 3) {
+                        if (orderStatus == Order.ORDER_FINISHED) {
                             EventBus.getDefault().post(new OrderStatusChangeEvent());
                         }
                     }
