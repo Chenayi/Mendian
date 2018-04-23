@@ -40,7 +40,7 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
      * @param orderPrice
      */
     public void requestScanPay(String authCode, final String orderId, String orderPrice) {
-        mView.showLoading();
+        mView.showLoadingNotBackDismiss();
         mHttpManager.obtainRetrofitService(ApiService.class)
                 .requestFansao(ParamsUtils
                         .params("authCode", authCode)

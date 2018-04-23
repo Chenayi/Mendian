@@ -22,9 +22,20 @@ public class LoadingDialog extends BaseDialog {
     ImageView ivLoad;
     private ObjectAnimator rotation;
 
+    private boolean isBackDismiss;
+
     public static LoadingDialog newInstance() {
         Bundle args = new Bundle();
         LoadingDialog fragment = new LoadingDialog();
+        args.putBoolean("isBackDismiss", true);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static LoadingDialog newInstance(boolean isBackDismiss) {
+        Bundle args = new Bundle();
+        LoadingDialog fragment = new LoadingDialog();
+        args.putBoolean("isBackDismiss", isBackDismiss);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,12 +51,15 @@ public class LoadingDialog extends BaseDialog {
     @Override
     protected void initData() {
         setOutCancel(false);
+        isBackDismiss = getArguments().getBoolean("isBackDismiss");
         startRotateAnim();
         mDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dismiss();
+                    if (isBackDismiss){
+                        dismiss();
+                    }
                 }
                 return false;
             }

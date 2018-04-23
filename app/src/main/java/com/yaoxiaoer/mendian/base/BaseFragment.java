@@ -101,6 +101,11 @@ public abstract class BaseFragment<P extends IPresenter> extends SupportFragment
         mLoading.show(getChildFragmentManager());
     }
 
+    protected void startLoading(boolean isbackDismiss) {
+        mLoading = LoadingDialog.newInstance(isbackDismiss);
+        mLoading.show(getChildFragmentManager());
+    }
+
     protected void stopLoading() {
         if (mLoading != null) {
             mLoading.dismiss();

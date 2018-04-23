@@ -9,6 +9,8 @@ import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 
 public interface GatheringOrderContract {
     interface View extends IView {
+        void showLoadingNotBackDismiss();
+
         void scanPaySuccess(PayResultEntity qrcodeEntity);
 
         void paySuccess(PayResultEntity payResultEntity);

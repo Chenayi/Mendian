@@ -142,7 +142,7 @@ public class GatheringFragment extends BaseFragment<GatheringPresenter> implemen
         KeyboardUtils.registerSoftInputChangedListener(_mActivity, new KeyboardUtils.OnSoftInputChangedListener() {
             @Override
             public void onSoftInputChanged(int height) {
-                if (height > 0){
+                if (height > 0) {
                     //滚动到顶部
                     svContainer.post(new Runnable() {
                         @Override
@@ -314,6 +314,11 @@ public class GatheringFragment extends BaseFragment<GatheringPresenter> implemen
     @Override
     public void onError(int code, String msg) {
         ToastUtils.showShort(msg);
+    }
+
+    @Override
+    public void showLoadingNotBackDismiss() {
+        startLoading(false);
     }
 
     @Override

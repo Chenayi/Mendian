@@ -29,9 +29,12 @@ import com.yaoxiaoer.mendian.event.BackHomeEvent;
 import com.yaoxiaoer.mendian.mvp.presenter.GatheringOrderPresenter;
 import com.yaoxiaoer.mendian.ui.dialog.TipsDialog;
 import com.yaoxiaoer.mendian.utils.Order;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -294,6 +297,11 @@ public class GatheringWithOrderActivity extends BaseTitleBarListActivity<Gatheri
     @Subscribe
     public void paySuccess(BackHomeEvent backHomeEvent) {
         finish();
+    }
+
+    @Override
+    public void showLoadingNotBackDismiss() {
+        startLoading(false);
     }
 
     @Override

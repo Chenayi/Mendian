@@ -55,6 +55,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     private TextView tvPayType;
 
     private int mOrderId;
+    private int mOrderStatus;
     private String mOrderPrice;
     private List<OrderDetailEntity.OrderGoodsListBean> mOrderGoodsList;
 
@@ -87,6 +88,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     @Override
     protected void initBundleDatas(Bundle bundle) {
         mOrderId = bundle.getInt("orderId");
+        mOrderStatus = bundle.getInt("orderStatus");
     }
 
     @Override
@@ -114,7 +116,12 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
 
     @Override
     protected void refreshData() {
-        mPresenter.requestOrderDetail(mOrderId);
+        //如果是未处理，去查一下是否已完成
+        if (mOrderStatus == Order.ORDER_NO_HANDLE){
+            mPresenter.requestPayResult(mOrderId);
+        }else {
+            mPresenter.requestOrderDetail(mOrderId);
+        }
     }
 
     @Override

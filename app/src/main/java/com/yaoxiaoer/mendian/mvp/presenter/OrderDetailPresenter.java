@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.yaoxiaoer.mendian.base.BasePresenter;
 import com.yaoxiaoer.mendian.di.scope.ActivityScope;
+import com.yaoxiaoer.mendian.event.OrderStatusChangeEvent;
 import com.yaoxiaoer.mendian.http.BaseObserver;
 import com.yaoxiaoer.mendian.http.HttpManager;
 import com.yaoxiaoer.mendian.http.RxScheduler;
@@ -13,8 +14,13 @@ import com.yaoxiaoer.mendian.mvp.entity.BaseResponse;
 import com.yaoxiaoer.mendian.mvp.entity.OrderDetailEntity;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 import com.yaoxiaoer.mendian.C;
+import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
+
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -33,7 +39,7 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailContract.View
      *
      * @param orderId
      */
-    public void requestOrderDetail(int orderId) {
+    public void requestOrderDetail(final int orderId) {
         mHttpManager.obtainRetrofitService(ApiService.class)
                 .requestOrderDetail(C.USER_ID, Utils.getEncryptRadomNum(), orderId)
                 .compose(RxScheduler.<BaseResponse<OrderDetailEntity>>compose())
@@ -56,6 +62,36 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailContract.View
                     @Override
                     protected void onHandleAfter() {
                         mView.hideLoading();
+                    }
+                });
+    }
+
+    public void requestPayResult(final int orderId) {
+        mHttpManager.obtainRetrofitService(ApiService.class)
+                .queryOrderPay(C.USER_ID, Utils.getEncryptRadomNum(), String.valueOf(orderId))
+                .compose(RxScheduler.<BaseResponse<PayResultEntity>>compose())
+                .subscribe(new BaseObserver<PayResultEntity>(mContext) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposable(d);
+                    }
+
+                    @Override
+                    protected void onHandleSuccess(PayResultEntity payResultEntity) {
+                        int orderStatus = payResultEntity.orderStatus;
+                        //已完成
+                        if (orderStatus == 3) {
+                            EventBus.getDefault().post(new OrderStatusChangeEvent());
+                        }
+                    }
+
+                    @Override
+                    protected void onHandleError(int code, String msg) {
+                    }
+
+                    @Override
+                    protected void onHandleAfter() {
+                        requestOrderDetail(orderId);
                     }
                 });
     }

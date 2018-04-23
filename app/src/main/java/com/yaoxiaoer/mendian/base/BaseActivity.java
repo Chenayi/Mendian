@@ -98,6 +98,11 @@ public abstract class BaseActivity<P extends IPresenter> extends SupportActivity
         mLoading.show(getSupportFragmentManager());
     }
 
+    protected void startLoading(boolean isBackDismiss) {
+        mLoading = LoadingDialog.newInstance(isBackDismiss);
+        mLoading.show(getSupportFragmentManager());
+    }
+
     protected void stopLoading() {
         if (mLoading != null) {
             mLoading.dismiss();

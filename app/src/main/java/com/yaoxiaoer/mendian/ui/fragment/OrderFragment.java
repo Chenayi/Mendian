@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
@@ -12,10 +13,13 @@ import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.adapter.CommomViewPagerAdapter;
 import com.yaoxiaoer.mendian.base.BaseFragment;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
+import com.yaoxiaoer.mendian.event.OrderStatusChangeEvent;
 import com.yaoxiaoer.mendian.ui.dialog.OrderOptionDialog;
 import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
 import com.yaoxiaoer.mendian.widget.RootLayout;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +41,7 @@ public class OrderFragment extends BaseFragment {
     RootLayout rootLayout;
 
     private CommomViewPagerAdapter viewPagerAdapter;
+    private boolean isOrderStatusChange = false;
 
     /**
      * 开始时间
@@ -169,5 +174,29 @@ public class OrderFragment extends BaseFragment {
         mOrderSource = "1";
         mOrderCode = null;
         mBuyMember = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isOrderStatusChange){
+            int currentItem = vp.getCurrentItem();
+            if (currentItem == 0 || currentItem == 1){
+                if (viewPagerAdapter != null){
+                    ((OrderChildFragment)viewPagerAdapter.getItem(currentItem)).refreshOrder();
+                }
+            }
+            isOrderStatusChange = false;
+        }
+    }
+
+    @Subscribe
+    public void orderStatusChange(OrderStatusChangeEvent orderStatusChangeEvent) {
+        isOrderStatusChange = true;
+    }
+
+    @Override
+    protected boolean isLoadEvenetBus() {
+        return true;
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -13,6 +14,7 @@ import com.yaoxiaoer.mendian.base.BaseListFragment;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerOrderComponent;
 import com.yaoxiaoer.mendian.di.module.OrderModule;
+import com.yaoxiaoer.mendian.event.OrderStatusChangeEvent;
 import com.yaoxiaoer.mendian.mvp.contract.OrderContract;
 import com.yaoxiaoer.mendian.mvp.entity.OrderEntity;
 import com.yaoxiaoer.mendian.mvp.presenter.OrderPresenter;
@@ -20,6 +22,8 @@ import com.yaoxiaoer.mendian.ui.activity.MainActivity;
 import com.yaoxiaoer.mendian.ui.activity.OrderDetailActivity;
 import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -174,6 +178,7 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
     protected void onListItemClick(OrderEntity.ListBean data, int position) {
         Bundle bundle = new Bundle();
         bundle.putInt("orderId", data.orderId);
+        bundle.putInt("orderStatus", data.orderStatus);
         jumpActivity(bundle, OrderDetailActivity.class);
     }
 
