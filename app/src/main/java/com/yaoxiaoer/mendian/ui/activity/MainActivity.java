@@ -94,10 +94,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 super.onPageSelected(position);
 
                 switch (position) {
-                    //首页
-                    case 0:
-                        ((HomeFragment) mVPMainAdapter.getItem(position)).refreshHomeDatas(true);
-                        break;
                     //订单
                     case 1:
                         ((OrderFragment) mVPMainAdapter.getItem(position)).resetOrder();

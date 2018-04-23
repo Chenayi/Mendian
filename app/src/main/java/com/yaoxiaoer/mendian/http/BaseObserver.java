@@ -3,6 +3,7 @@ package com.yaoxiaoer.mendian.http;
 
 import android.content.Context;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.orhanobut.logger.Logger;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.http.exception.NeedPayPwdException;
@@ -38,20 +39,18 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     @Override
     public void onError(Throwable e) {
-        if (e instanceof ResultException) {
-            ResultException resultException = (ResultException) e;
-            onHandleError(resultException.errorCode, resultException.errorMsg);
+        if (e instanceof NeedPayPwdException) {
+            NeedPayPwdException needPayPwdException = (NeedPayPwdException) e;
+            onHandleError(C.CODE_NEED_PAY_PASSWORD, needPayPwdException.orderId);
         } else if (e instanceof SocketTimeoutException) {
             onHandleError(C.CODE_HTTP_EXCEPTION, mContext.getResources().getString(R.string.connect_time_out));
         } else if (e instanceof NoNetWorkException || e instanceof IOException) {
             onHandleError(C.CODE_NO_NETWORK_EXCEPTION, mContext.getResources().getString(R.string.no_net_work));
         } else if (e instanceof IOException) {
             onHandleError(C.CODE_CONNECT_EXCEPTION, mContext.getResources().getString(R.string.connect_fail));
-        }
-        //反扫需要支付密码
-        else if (e instanceof NeedPayPwdException) {
-            NeedPayPwdException needPayPwdException = (NeedPayPwdException) e;
-            onHandleError(C.CODE_NEED_PAY_PASSWORD, needPayPwdException.orderId);
+        } else if (e instanceof ResultException) {
+            ResultException resultException = (ResultException) e;
+            onHandleError(resultException.errorCode, resultException.errorMsg);
         } else {
             onHandleError(C.CODE_OTHER_EXCEPTION, e.getMessage());
         }

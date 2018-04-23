@@ -31,7 +31,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> {
      *
      * @param isShowLoading
      */
-    public void requestHomeDatas(boolean isShowLoading) {
+    public void requestHomeDatas(final boolean isShowLoading) {
         if (isShowLoading) {
             mView.showLoading();
         }
@@ -56,7 +56,9 @@ public class HomePresenter extends BasePresenter<HomeContract.View> {
 
                     @Override
                     protected void onHandleAfter() {
-                        mView.hideLoading();
+                        if (isShowLoading){
+                            mView.hideLoading();
+                        }
                     }
                 });
     }

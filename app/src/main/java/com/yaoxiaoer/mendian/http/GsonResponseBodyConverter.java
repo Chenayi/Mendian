@@ -1,5 +1,6 @@
 package com.yaoxiaoer.mendian.http;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.yaoxiaoer.mendian.http.exception.NeedPayPwdException;
 import com.yaoxiaoer.mendian.http.exception.ResultException;

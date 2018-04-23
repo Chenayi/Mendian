@@ -4,6 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.R;
@@ -11,6 +12,7 @@ import com.yaoxiaoer.mendian.base.BaseFragment;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerHomeComponent;
 import com.yaoxiaoer.mendian.di.module.HomeModule;
+import com.yaoxiaoer.mendian.event.BackHomeEvent;
 import com.yaoxiaoer.mendian.mvp.contract.HomeContract;
 import com.yaoxiaoer.mendian.mvp.entity.HomeEntity;
 import com.yaoxiaoer.mendian.mvp.presenter.HomePresenter;
@@ -18,6 +20,8 @@ import com.yaoxiaoer.mendian.ui.activity.LoginActivity;
 import com.yaoxiaoer.mendian.ui.dialog.TipsDialog;
 import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.widget.RootLayout;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
@@ -46,6 +50,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     TextView tv30orderNumbers;
     @BindView(R.id.tv_30_averagePrice)
     TextView tv30AveragePrice;
+
+    private boolean isReceiveBackHome = false;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -111,7 +117,15 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     @Override
     public void hideLoading() {
         stopLoading();
-        refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isReceiveBackHome) {
+            refreshHomeDatas(false);
+            isReceiveBackHome = false;
+        }
     }
 
     @Override
@@ -121,6 +135,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void showHomeDatas(HomeEntity homeEntity) {
+        refreshLayout.setRefreshing(false);
+
         HomeEntity.StoreInfoBean storeInfo = homeEntity.getStoreInfo();
         if (null != storeInfo) {
             rootLayout.setTitle(storeInfo.getStoreName());
@@ -144,5 +160,15 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
             tv30orderNumbers.setText(thirtyday.getOrderNumbers() + "");
             tv30AveragePrice.setText(thirtyday.getAveragePrice() + "");
         }
+    }
+
+    @Override
+    protected boolean isLoadEvenetBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void backHome(BackHomeEvent backHomeEvent) {
+        isReceiveBackHome = true;
     }
 }
