@@ -169,8 +169,9 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
                 jumpActivity(bundle, GatheringWithOrderActivity.class);
                 break;
             case R.id.btn_self_take:
-                TipsDialog.newInstance("注意说明", "自提发货等同于该订单已现金支付完成" +
-                        "是否已收到货款现金？", ContextCompat.getColor(this, R.color.color_ff9600))
+                TipsDialog.newInstance("注意说明", "自提发货等同于该订单已现金支付完成，" +
+                                "是否已收到货款现金？", ContextCompat.getColor(this, R.color.color_ff9600)
+                        , "是", "否")
                         .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
                             @Override
                             public void onSure() {

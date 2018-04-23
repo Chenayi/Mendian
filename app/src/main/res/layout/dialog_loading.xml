@@ -14,7 +14,8 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/loading" />
+            android:src="@mipmap/loading"
+            />
     </RelativeLayout>
 
 </RelativeLayout>

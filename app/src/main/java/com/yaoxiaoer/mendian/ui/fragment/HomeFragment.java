@@ -3,6 +3,7 @@ package com.yaoxiaoer.mendian.ui.fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.R;
@@ -17,6 +18,7 @@ import com.yaoxiaoer.mendian.ui.activity.LoginActivity;
 import com.yaoxiaoer.mendian.ui.dialog.TipsDialog;
 import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.widget.RootLayout;
+
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 
@@ -70,7 +72,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                 .setOnRightOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        TipsDialog.newInstance(null, "您确定退出当前账户？")
+                        TipsDialog.newInstance(null, "是否退出当前账户？", "是", "否")
                                 .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
                                     @Override
                                     public void onSure() {

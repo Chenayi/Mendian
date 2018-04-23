@@ -12,7 +12,9 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.bigkoo.pickerview.TimePickerView;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.gyf.barlibrary.ImmersionBar;
@@ -203,7 +205,7 @@ public class OrderOptionDialog extends BaseDialog {
                 calendar.set(NumberUtils.parseInt(year), NumberUtils.parseInt(month) - 1, NumberUtils.parseInt(day));
             }
         }
-        TimePickerView timePickerView = new TimePickerView.Builder(getContext(), new TimePickerView.OnTimeSelectListener() {
+        TimePickerView timePickerView = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
                 if (mChooseWhat == Order.START_DATE) {
@@ -222,7 +224,8 @@ public class OrderOptionDialog extends BaseDialog {
                 .setSubmitColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))//确定按钮文字颜色
                 .setCancelColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))//取消按钮文字颜色
                 .setLineSpacingMultiplier(1.8f)
-                .setContentSize(20)
+                .setContentTextSize(20)
+                .setTextColorCenter(ContextCompat.getColor(getContext(),R.color.colorPrimary))
                 .build();
         timePickerView.show();
     }

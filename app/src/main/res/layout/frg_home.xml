@@ -184,7 +184,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="12dp"
-                            android:src="@mipmap/trading1" />
+                            android:src="@mipmap/cus_order1" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -334,7 +334,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_marginTop="12dp"
-                            android:src="@mipmap/trading2" />
+                            android:src="@mipmap/cus_order2" />
 
                         <TextView
                             android:layout_width="wrap_content"

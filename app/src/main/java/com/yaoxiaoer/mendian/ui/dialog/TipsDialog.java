@@ -43,12 +43,14 @@ public class TipsDialog extends BaseDialog {
         return tipsDialog;
     }
 
-    public static TipsDialog newInstance(String title, String content, int leftTextColor) {
+    public static TipsDialog newInstance(String title, String content, int leftTextColor, String leftText, String rightText) {
         TipsDialog tipsDialog = new TipsDialog();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putString("content", content);
         bundle.putInt("leftTextColor", leftTextColor);
+        bundle.putString("leftText", leftText);
+        bundle.putString("rightText", rightText);
         tipsDialog.setArguments(bundle);
         tipsDialog.setMargin(52);
         return tipsDialog;
@@ -62,6 +64,7 @@ public class TipsDialog extends BaseDialog {
         bundle.putString("leftText", leftText);
         bundle.putString("rightText", rightText);
         tipsDialog.setArguments(bundle);
+        tipsDialog.setMargin(52);
         return tipsDialog;
     }
 
