@@ -2,7 +2,6 @@ package com.yaoxiaoer.mendian.mvp.presenter;
 
 import android.content.Context;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.di.scope.FragmentScope;
@@ -67,7 +66,7 @@ public class GatheringPresenter extends PayResultPresenter<GatheringContract.Vie
                     protected void onHandleError(int code, String msg) {
                         //用户需要输密码
                         if (code == C.CODE_NEED_PAY_PASSWORD  || (msg != null && msg.equals("需要用户输入支付密码"))) {
-                            ToastUtils.showShort("等待用户输入密码中");
+                            ToastUtils.showShort("需要用户输入支付密码");
                             String orderId = msg;
                             requestPayResult(0, 2, orderId);
                         } else {

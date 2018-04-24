@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         //震动提醒
         mPresenter.vibrator();
         //语音播报
-        //mPresenter.playSpeech("收到一个新订单");
+        mPresenter.playSpeech(mApp.getSpeechSynthesizer(), "您有新的订单");
         SPUtils.getInstance().put(C.NEW_ORDER, true);
         addBadgeAt(1, -1);
     }

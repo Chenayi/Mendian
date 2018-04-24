@@ -3,8 +3,8 @@ package com.yaoxiaoer.mendian;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.baidu.tts.client.SpeechSynthesizer;
 import com.blankj.utilcode.util.Utils;
-import com.iflytek.cloud.SpeechUtility;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
@@ -24,6 +24,7 @@ import cn.jpush.android.api.JPushInterface;
 
 public class App extends Application {
     private AppComponent mAppComponent;
+    private SpeechSynthesizer mySynthesizer;
 
     @Override
     public void onCreate() {
@@ -53,7 +54,18 @@ public class App extends Application {
         //数据库
         LitePal.initialize(this);
         //语音初始化
-        SpeechUtility.createUtility(this, "appid=5a950400");
+        initVoice();
+    }
+
+    private void initVoice() {
+        mySynthesizer = SpeechSynthesizer.getInstance();
+        mySynthesizer.setContext(this);
+        mySynthesizer.setAppId("11149254");
+        mySynthesizer.setApiKey("R9SkKAjFlBAo9GGi7P962YiW", "d770298903dbddab367e4e71346feced");
+    }
+
+    public SpeechSynthesizer getSpeechSynthesizer() {
+        return mySynthesizer;
     }
 
     @Override

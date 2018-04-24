@@ -1,10 +1,13 @@
 package com.yaoxiaoer.mendian.mvp.presenter;
 
 import android.content.Context;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechSynthesizer;
+import android.text.TextUtils;
+
+import com.baidu.tts.client.SpeechSynthesizer;
+import com.baidu.tts.client.TtsMode;
 import com.yaoxiaoer.mendian.http.HttpManager;
 import com.yaoxiaoer.mendian.mvp.contract.PaySuccessContract;
+
 import javax.inject.Inject;
 
 /**
@@ -12,10 +15,6 @@ import javax.inject.Inject;
  */
 
 public class PaySuccessPresenter extends DelayFinishPresenter<PaySuccessContract.View> {
-    /**
-     * 语音播报
-     */
-    private SpeechSynthesizer mySynthesizer;
 
     @Inject
     public PaySuccessPresenter(Context context, PaySuccessContract.View view, HttpManager httpManager) {
@@ -37,17 +36,12 @@ public class PaySuccessPresenter extends DelayFinishPresenter<PaySuccessContract
      *
      * @param msg
      */
-    public void playSpeech(String msg) {
-        if (mySynthesizer == null) {
-            mySynthesizer = SpeechSynthesizer.createSynthesizer(mContext, null);
-            //设置发音人
-            mySynthesizer.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
-            //设置音调
-            mySynthesizer.setParameter(SpeechConstant.PITCH, "50");
-            //设置音量
-            mySynthesizer.setParameter(SpeechConstant.VOLUME, "100");
+    public void playSpeech(SpeechSynthesizer speechSynthesizer, String msg) {
+        if (speechSynthesizer != null && !TextUtils.isEmpty(msg)) {
+            //声量
+            speechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");
+            speechSynthesizer.initTts(TtsMode.MIX);
+            speechSynthesizer.speak(msg);
         }
-        //播放语音
-        mySynthesizer.startSpeaking(msg, null);
     }
 }

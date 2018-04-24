@@ -69,7 +69,7 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
                     protected void onHandleError(int code, String msg) {
                         //用户需要输密码
                         if (code == C.CODE_NEED_PAY_PASSWORD || (msg != null && msg.equals("需要用户输入支付密码"))) {
-                            ToastUtils.showShort("等待用户输入密码中");
+                            ToastUtils.showLong("需要用户输入支付密码");
                             requestPayResult(0, 2, orderId);
                         } else {
                             mView.hideLoading();

@@ -1,6 +1,7 @@
 package com.yaoxiaoer.mendian.ui.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -71,8 +72,23 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessPresenter> implem
         mPayResultEntity = (PayResultEntity) extras.getSerializable("payResult");
         isFromOrder = extras.getBoolean("isFromOrder");
 
+        //收款方式
+        String payType = mPayResultEntity.payType;
+        String payTypeVoice;
+        if (payType.equals(Order.PAY_TYPE_WX)) {
+            tvGatherWay.setText("微信支付");
+            payTypeVoice = "微信";
+        } else if (payType.equals(Order.PAY_TYPE_ALIPAY)) {
+            tvGatherWay.setText("支付宝");
+            payTypeVoice = "支付宝";
+        } else {
+            tvGatherWay.setText("现金支付");
+            payTypeVoice = "现金";
+        }
+
         //语音播报
-        //mPresenter.playSpeech("药小二到账" + mPayResultEntity.orderPrice + "元");
+        mPresenter.playSpeech(mApp.getSpeechSynthesizer(),
+                payTypeVoice + "收款成功" + mPayResultEntity.orderPrice + "元");
 
         if (!isFromOrder) {
             tvOrderCode.setVisibility(View.GONE);
@@ -88,15 +104,6 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessPresenter> implem
         tvPayOrderCode.setText(mPayResultEntity.transactionId);
         //平台订单号
         tvPtOrderCode.setText(mPayResultEntity.orderCode);
-        //收款方式
-        String payType = mPayResultEntity.payType;
-        if (payType.equals(Order.PAY_TYPE_WX)) {
-            tvGatherWay.setText("微信支付");
-        } else if (payType.equals(Order.PAY_TYPE_ALIPAY)) {
-            tvGatherWay.setText("支付宝");
-        } else {
-            tvGatherWay.setText("现金支付");
-        }
         //支付方式
         String triggerType = mPayResultEntity.triggerType;
         if (triggerType != null) {
