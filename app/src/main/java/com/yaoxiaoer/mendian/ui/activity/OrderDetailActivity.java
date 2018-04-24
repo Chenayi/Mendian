@@ -241,7 +241,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         }
         //配送方式
         if (!TextUtils.isEmpty(orderDetail.getDistributionType())) {
-            tvDistributionType.setText(orderDetail.getDistributionType().equals("1") ? "快递配送" : "上门自提");
+            tvDistributionType.setText(orderDetail.getDistributionType().equals("0") ? "快递配送" : "上门自提");
         }
 
         //客户姓名
