@@ -295,7 +295,7 @@ public class GatheringWithOrderActivity extends BaseTitleBarListActivity<Gatheri
     }
 
     @Subscribe
-    public void paySuccess(BackHomeEvent backHomeEvent) {
+    public void backHome(BackHomeEvent backHomeEvent) {
         finish();
     }
 
@@ -306,14 +306,6 @@ public class GatheringWithOrderActivity extends BaseTitleBarListActivity<Gatheri
 
     @Override
     public void scanPaySuccess(PayResultEntity payResultEntity) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("payResult", payResultEntity);
-        bundle.putBoolean("isFromOrder", true);
-        jumpActivity(bundle, PaySuccessActivity.class);
-    }
-
-    @Override
-    public void paySuccess(PayResultEntity payResultEntity) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("payResult", payResultEntity);
         bundle.putBoolean("isFromOrder", true);

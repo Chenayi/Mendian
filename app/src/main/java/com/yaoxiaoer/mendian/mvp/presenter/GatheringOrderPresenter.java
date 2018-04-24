@@ -1,6 +1,8 @@
 package com.yaoxiaoer.mendian.mvp.presenter;
 
 import android.content.Context;
+
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.di.scope.ActivityScope;
@@ -14,7 +16,9 @@ import com.yaoxiaoer.mendian.mvp.entity.BaseResponse;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.utils.Utils;
+
 import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -29,7 +33,7 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
 
     @Override
     public void paySuccess(PayResultEntity payResultEntity) {
-        mView.paySuccess(payResultEntity);
+        mView.scanPaySuccess(payResultEntity);
     }
 
     /**
@@ -50,7 +54,7 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
                         .params("userId", C.USER_ID)
                         .params("randomNum", Utils.getEncryptRadomNum())
                         .commitParams())
-              .compose(RxScheduler.<BaseResponse<PayResultEntity>>compose())
+                .compose(RxScheduler.<BaseResponse<PayResultEntity>>compose())
                 .subscribe(new BaseObserver<PayResultEntity>(mContext) {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -66,7 +70,7 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
                     @Override
                     protected void onHandleError(int code, String msg) {
                         //用户需要输密码
-                        if (code == C.CODE_NEED_PAY_PASSWORD) {
+                        if (code == C.CODE_NEED_PAY_PASSWORD || (msg != null && msg.equals("需要用户输入支付密码"))) {
                             ToastUtils.showShort("等待用户输入密码中");
                             requestPayResult(0, 2, orderId);
                         } else {

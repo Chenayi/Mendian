@@ -11,8 +11,6 @@ public interface GatheringOrderContract {
     interface View extends IView {
         void showLoadingNotBackDismiss();
 
-        void scanPaySuccess(PayResultEntity qrcodeEntity);
-
-        void paySuccess(PayResultEntity payResultEntity);
+        void scanPaySuccess(PayResultEntity payResultEntity);
     }
 }
