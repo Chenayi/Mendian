@@ -66,7 +66,7 @@ public class GatheringPresenter extends PayResultPresenter<GatheringContract.Vie
                     @Override
                     protected void onHandleError(int code, String msg) {
                         //用户需要输密码
-                        if (code == C.CODE_NEED_PAY_PASSWORD) {
+                        if (code == C.CODE_NEED_PAY_PASSWORD  || (msg != null && msg.equals("需要用户输入支付密码"))) {
                             ToastUtils.showShort("等待用户输入密码中");
                             String orderId = msg;
                             requestPayResult(0, 2, orderId);
