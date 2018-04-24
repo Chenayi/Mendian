@@ -259,12 +259,14 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         if (orderDetail.orderStatus == Order.ORDER_FINISHED) {
             llBottom.setVisibility(View.GONE);
             tvOrderStatus.setVisibility(View.VISIBLE);
-            llPayType.setVisibility(View.VISIBLE);
             tvOrderStatus.setText("订单已完成");
             tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            if (orderDetail.payType != null) {
+            if (!TextUtils.isEmpty(orderDetail.payType)){
+                llPayType.setVisibility(View.VISIBLE);
                 setPayType(orderDetail.payType);
+            }else {
+                llPayType.setVisibility(View.GONE);
             }
         }
         //已取消
@@ -274,9 +276,11 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
             tvOrderStatus.setText("订单已取消");
             tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.color_ff552e));
             tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff552e));
-            llPayType.setVisibility(View.VISIBLE);
-            if (orderDetail.payType != null) {
+            if (!TextUtils.isEmpty(orderDetail.payType)) {
+                llPayType.setVisibility(View.VISIBLE);
                 setPayType(orderDetail.payType);
+            }else {
+                llPayType.setVisibility(View.GONE);
             }
         }
         //未处理

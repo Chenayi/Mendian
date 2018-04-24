@@ -130,6 +130,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void onError(int code, String msg) {
+        refreshLayout.setRefreshing(false);
         ToastUtils.showShort(msg);
     }
 
