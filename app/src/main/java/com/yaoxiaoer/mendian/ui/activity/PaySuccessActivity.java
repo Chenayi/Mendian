@@ -88,7 +88,7 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessPresenter> implem
 
         //语音播报
         mPresenter.playSpeech(mApp.getSpeechSynthesizer(),
-                payTypeVoice + "收款成功" + mPayResultEntity.orderPrice + "元");
+                payTypeVoice + "收款" + mPayResultEntity.orderPrice + "元");
 
         if (!isFromOrder) {
             tvOrderCode.setVisibility(View.GONE);

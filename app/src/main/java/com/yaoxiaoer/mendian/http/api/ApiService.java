@@ -7,6 +7,7 @@ import com.yaoxiaoer.mendian.mvp.entity.ApkInfoEntity;
 import com.yaoxiaoer.mendian.mvp.entity.BaseResponse;
 import com.yaoxiaoer.mendian.mvp.entity.CashierEntity;
 import com.yaoxiaoer.mendian.mvp.entity.HomeEntity;
+import com.yaoxiaoer.mendian.mvp.entity.NullEntity;
 import com.yaoxiaoer.mendian.mvp.entity.OrderDetailEntity;
 import com.yaoxiaoer.mendian.mvp.entity.OrderEntity;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
@@ -94,9 +95,13 @@ public interface ApiService {
     @POST("queryUseNameApp.shtml")
     Observable<BaseResponse<CashierEntity>> requestCashier(@Field("userId") long userId, @Field("randomNum") String randomNum);
 
-//    @FormUrlEncoded
+    //    @FormUrlEncoded
     @POST("appversion.shtml")
     Observable<BaseResponse<ApkInfoEntity>> checkUpgrade();
+
+    @FormUrlEncoded
+    @POST("timequeryOrderpayOrnot.shtml")
+    Observable<BaseResponse<NullEntity>> timequeryOrderpayOrnot(@Field("orderId") String orderId, @Field("userId") long userId);
 
     /**
      * 下载文件

@@ -78,8 +78,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> {
      * @param user
      */
     private void cacheUser(final User user) {
-        Observable
-                .create(new ObservableOnSubscribe<Boolean>() {
+        addDisposable(
+                Observable.create(new ObservableOnSubscribe<Boolean>() {
                     @Override
                     public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
                         user.setLocalCreateOrUpdateTime(System.currentTimeMillis());
@@ -87,47 +87,50 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> {
                         C.USER_ID = user.getU_id();
                         C.RADOM_NUM = user.getRandomNum();
                         C.STORE_ID = user.getU_sid();
-                        JPushInterface.setAlias(mContext, user.getU_id(), String.valueOf(user.getU_sid()));
+                        JPushInterface.setAlias(mContext, user.getU_id(), C.STORE_ID+"");
                         SPUtils.getInstance().put(C.IS_LOGIN, true);
                         e.onNext(save);
                     }
                 })
-                .compose(RxScheduler.<Boolean>compose())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        mView.hideLoading();
-                        mView.loginSuccess();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.hideLoading();
-                        mView.loginSuccess();
-                    }
-                });
+                        .compose(RxScheduler.<Boolean>compose())
+                        .subscribe(new Consumer<Boolean>() {
+                            @Override
+                            public void accept(Boolean aBoolean) throws Exception {
+                                mView.hideLoading();
+                                mView.loginSuccess();
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                mView.hideLoading();
+                                mView.loginSuccess();
+                            }
+                        })
+        );
     }
 
     /**
      * 查找缓存中的用户名列表
      */
     public void findCacheUserNames() {
-        Observable
-                .create(new ObservableOnSubscribe<List<User>>() {
+        addDisposable(
+                Observable.create(new ObservableOnSubscribe<List<User>>() {
                     @Override
                     public void subscribe(ObservableEmitter<List<User>> e) throws Exception {
                         List<User> users = DataSupport.order("localCreateOrUpdateTime desc").limit(3).find(User.class);
                         e.onNext(users);
                     }
                 })
-                .compose(RxScheduler.<List<User>>compose())
-                .subscribe(new Consumer<List<User>>() {
-                    @Override
-                    public void accept(List<User> users) throws Exception {
-                        if (null != users && users.size() > 0) {
-                            mView.showCacheUsers(users);
-                        }
-                    }
-                });
+                        .compose(RxScheduler.<List<User>>compose())
+                        .subscribe(new Consumer<List<User>>() {
+                            @Override
+                            public void accept(List<User> users) throws Exception {
+                                if (null != users && users.size() > 0) {
+                                    mView.showCacheUsers(users);
+                                }
+                            }
+                        })
+        );
+
     }
 }

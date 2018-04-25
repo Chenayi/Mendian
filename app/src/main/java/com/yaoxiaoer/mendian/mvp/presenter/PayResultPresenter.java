@@ -9,6 +9,7 @@ import com.yaoxiaoer.mendian.http.HttpManager;
 import com.yaoxiaoer.mendian.http.RxScheduler;
 import com.yaoxiaoer.mendian.http.api.ApiService;
 import com.yaoxiaoer.mendian.mvp.entity.BaseResponse;
+import com.yaoxiaoer.mendian.mvp.entity.NullEntity;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.utils.Order;
@@ -82,6 +83,34 @@ public abstract class PayResultPresenter<V extends IView> extends BasePresenter<
                     public void onComplete() {
                     }
                 });
+    }
+
+    /**
+     * 触发此接口让后台开始轮询
+     */
+    public void timequeryOrderpayOrnot(String orderId){
+        mHttpManager.obtainRetrofitService(ApiService.class)
+                .timequeryOrderpayOrnot(orderId,C.USER_ID)
+                .compose(RxScheduler.<BaseResponse<NullEntity>>compose())
+                .subscribe(new Observer<BaseResponse<NullEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse<NullEntity> nullEntityBaseResponse) {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
     }
 
     public abstract void paySuccess(PayResultEntity payResultEntity);

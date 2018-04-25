@@ -58,7 +58,8 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/color_line" />
+            android:background="@color/color_line"
+            android:id="@+id/line"/>
 
         <TextView
             android:id="@+id/tv_right"

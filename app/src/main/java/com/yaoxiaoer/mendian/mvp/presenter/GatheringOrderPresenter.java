@@ -70,7 +70,8 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
                         //用户需要输密码
                         if (code == C.CODE_NEED_PAY_PASSWORD || (msg != null && msg.equals("需要用户输入支付密码"))) {
                             ToastUtils.showLong("需要用户输入支付密码");
-                            requestPayResult(0, 2, orderId);
+                            timequeryOrderpayOrnot(orderId);
+                            requestPayResult(2, 2, orderId);
                         } else {
                             mView.hideLoading();
                             mView.onError(code, msg);

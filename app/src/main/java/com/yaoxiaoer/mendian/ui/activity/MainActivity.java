@@ -8,18 +8,23 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.orhanobut.logger.Logger;
+import com.yaoxiaoer.mendian.BuildConfig;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.adapter.CommomViewPagerAdapter;
 import com.yaoxiaoer.mendian.base.BaseActivity;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerMainComponent;
 import com.yaoxiaoer.mendian.di.module.MainModule;
+import com.yaoxiaoer.mendian.event.AccountsFreeingEvent;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
 import com.yaoxiaoer.mendian.event.PushOrderEvent;
 import com.yaoxiaoer.mendian.mvp.contract.MainContract;
 import com.yaoxiaoer.mendian.mvp.entity.ApkInfoEntity;
 import com.yaoxiaoer.mendian.mvp.presenter.MainPresenter;
+import com.yaoxiaoer.mendian.ui.dialog.TipsDialog;
 import com.yaoxiaoer.mendian.ui.dialog.UpgradeDialog;
 import com.yaoxiaoer.mendian.ui.fragment.AccountsFragment;
 import com.yaoxiaoer.mendian.ui.fragment.GatheringFragment;
@@ -36,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 import q.rorbin.badgeview.QBadgeView;
 
 /**
@@ -52,6 +58,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private CommomViewPagerAdapter mVPMainAdapter;
     private List<Fragment> mFragments;
     private QBadgeView mQBadgeView;
+
+    private TipsDialog mAccountFreeingDialog;
 
     {
         mFragments = new ArrayList<>();
@@ -131,11 +139,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         return true;
     }
 
+    /**
+     * 返回首页
+     *
+     * @param backHomeEvent
+     */
     @Subscribe
-    public void paySuccess(BackHomeEvent backHomeEvent) {
+    public void backHome(BackHomeEvent backHomeEvent) {
         mVPMain.setCurrentItem(0, false);
     }
 
+    /**
+     * 有新订单
+     *
+     * @param pushEvent
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiverPushNewOrderEvent(PushOrderEvent pushEvent) {
         //震动提醒
@@ -144,6 +162,34 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         mPresenter.playSpeech(mApp.getSpeechSynthesizer(), "您有新的订单");
         SPUtils.getInstance().put(C.NEW_ORDER, true);
         addBadgeAt(1, -1);
+    }
+
+    /**
+     * 账户冻结
+     *
+     * @param accountsFreeingEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void accountsFreeing(AccountsFreeingEvent accountsFreeingEvent) {
+        if (mAccountFreeingDialog == null || !mAccountFreeingDialog.getDialog().isShowing()){
+            mAccountFreeingDialog = TipsDialog.newInstance(null, accountsFreeingEvent.msg, true);
+            mAccountFreeingDialog.setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
+                @Override
+                public void onSure() {
+                    JPushInterface.deleteAlias(getApplicationContext(), C.STORE_ID);
+                    SPUtils.getInstance().put(C.IS_LOGIN, false);
+                    jumpActivity(LoginActivity.class);
+                    finish();
+                }
+
+                @Override
+                public void onCancel() {
+                }
+            })
+                    .show(getSupportFragmentManager())
+                    .setOutCancel(false)
+                    .setCancelable(false);
+        }
     }
 
     private void addBadgeAt(int position, int number) {

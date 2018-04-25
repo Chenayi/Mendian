@@ -25,13 +25,27 @@ public class TipsDialog extends BaseDialog {
     TextView tvLeft;
     @BindView(R.id.tv_right)
     TextView tvRight;
+    @BindView(R.id.line)
+    View line;
 
     private String title;
     private String content;
     private String leftText;
     private String rightText;
     private int leftTextColor;
+    private boolean isHideRightText = false;
     private OnTipsOnClickListener onTipsOnClickListener;
+
+    public static TipsDialog newInstance(String title, String content, boolean isHideRightText) {
+        TipsDialog tipsDialog = new TipsDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", title);
+        bundle.putString("content", content);
+        bundle.putBoolean("isHideRightText", isHideRightText);
+        tipsDialog.setArguments(bundle);
+        tipsDialog.setMargin(52);
+        return tipsDialog;
+    }
 
     public static TipsDialog newInstance(String title, String content) {
         TipsDialog tipsDialog = new TipsDialog();
@@ -95,6 +109,7 @@ public class TipsDialog extends BaseDialog {
             rightText = arguments.getString("rightText");
             leftTextColor = arguments.getInt("leftTextColor");
             content = arguments.getString("content");
+            isHideRightText = arguments.getBoolean("isHideRightText");
         }
 
         if (leftTextColor != 0) {
@@ -118,6 +133,11 @@ public class TipsDialog extends BaseDialog {
 
         if (!TextUtils.isEmpty(rightText)) {
             tvRight.setText(rightText);
+        }
+
+        if (isHideRightText) {
+            tvRight.setVisibility(View.GONE);
+            line.setVisibility(View.GONE);
         }
     }
 
