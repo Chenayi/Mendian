@@ -15,10 +15,12 @@ import javax.inject.Inject;
  */
 
 public class PaySuccessPresenter extends DelayFinishPresenter<PaySuccessContract.View> {
+    private SpeechSynthesizer mySynthesizer;
 
     @Inject
-    public PaySuccessPresenter(Context context, PaySuccessContract.View view, HttpManager httpManager) {
+    public PaySuccessPresenter(Context context, PaySuccessContract.View view, HttpManager httpManager, SpeechSynthesizer mySynthesizer) {
         super(context, view, httpManager);
+        this.mySynthesizer = mySynthesizer;
     }
 
     @Override
@@ -36,12 +38,12 @@ public class PaySuccessPresenter extends DelayFinishPresenter<PaySuccessContract
      *
      * @param msg
      */
-    public void playSpeech(SpeechSynthesizer speechSynthesizer, String msg) {
-        if (speechSynthesizer != null && !TextUtils.isEmpty(msg)) {
+    public void playSpeech(String msg) {
+        if (mySynthesizer != null && !TextUtils.isEmpty(msg)) {
             //声量
-            speechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");
-            speechSynthesizer.initTts(TtsMode.MIX);
-            speechSynthesizer.speak(msg);
+            mySynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");
+            mySynthesizer.initTts(TtsMode.MIX);
+            mySynthesizer.speak(msg);
         }
     }
 }

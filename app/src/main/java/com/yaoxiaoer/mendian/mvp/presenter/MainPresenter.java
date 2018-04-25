@@ -30,8 +30,9 @@ public class MainPresenter extends BasePresenter<MainContract.View> {
     private Vibrator mVibrator;
 
     @Inject
-    public MainPresenter(Context context, MainContract.View view, HttpManager httpManager) {
+    public MainPresenter(Context context, MainContract.View view, HttpManager httpManager,SpeechSynthesizer mySynthesizer) {
         super(context, view, httpManager);
+        this.mySynthesizer = mySynthesizer;
     }
 
     /**
@@ -84,12 +85,12 @@ public class MainPresenter extends BasePresenter<MainContract.View> {
      *
      * @param msg
      */
-    public void playSpeech(SpeechSynthesizer speechSynthesizer, String msg) {
-       if (speechSynthesizer != null && !TextUtils.isEmpty(msg)){
+    public void playSpeech(String msg) {
+       if (mySynthesizer != null && !TextUtils.isEmpty(msg)){
            //声量
-           speechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");
-           speechSynthesizer.initTts(TtsMode.MIX);
-           speechSynthesizer.speak(msg);
+           mySynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");
+           mySynthesizer.initTts(TtsMode.MIX);
+           mySynthesizer.speak(msg);
        }
     }
 }

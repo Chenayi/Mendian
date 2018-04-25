@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
+import com.baidu.tts.client.SpeechSynthesizer;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -40,6 +41,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import q.rorbin.badgeview.QBadgeView;
@@ -53,7 +56,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     BottomNavigationViewEx mBnev;
     @BindView(R.id.vp_main)
     NoScrollViewPager mVPMain;
-
 
     private CommomViewPagerAdapter mVPMainAdapter;
     private List<Fragment> mFragments;
@@ -159,7 +161,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         //震动提醒
         mPresenter.vibrator();
         //语音播报
-        mPresenter.playSpeech(mApp.getSpeechSynthesizer(), "您有新的订单");
+        mPresenter.playSpeech("您有新的订单");
         SPUtils.getInstance().put(C.NEW_ORDER, true);
         addBadgeAt(1, -1);
     }
@@ -171,7 +173,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void accountsFreeing(AccountsFreeingEvent accountsFreeingEvent) {
-        if (mAccountFreeingDialog == null || !mAccountFreeingDialog.getDialog().isShowing()){
+        if (mAccountFreeingDialog != null && mAccountFreeingDialog.getDialog().isShowing()){
+            mAccountFreeingDialog.dismiss();
             mAccountFreeingDialog = TipsDialog.newInstance(null, accountsFreeingEvent.msg, true);
             mAccountFreeingDialog.setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
                 @Override

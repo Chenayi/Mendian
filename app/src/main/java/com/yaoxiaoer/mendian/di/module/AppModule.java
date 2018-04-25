@@ -3,8 +3,11 @@ package com.yaoxiaoer.mendian.di.module;
 import android.content.Context;
 
 
+import com.baidu.tts.client.SpeechSynthesizer;
 import com.yaoxiaoer.mendian.http.HttpManager;
+
 import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
@@ -20,14 +23,26 @@ public class AppModule {
         this.mContext = context;
     }
 
+    @Provides
+    Context provideContext() {
+        return mContext;
+    }
+
     @Singleton
     @Provides
     HttpManager provideHttpManager(Retrofit retrofit) {
         return new HttpManager(retrofit);
     }
 
+    @Singleton
     @Provides
-    Context provideContext() {
-        return mContext;
+    SpeechSynthesizer provideSpeechSynthesizer(Context context) {
+        SpeechSynthesizer mySynthesizer = SpeechSynthesizer.getInstance();
+        mySynthesizer.setContext(context);
+        mySynthesizer.setAppId("11149254");
+        mySynthesizer.setApiKey("R9SkKAjFlBAo9GGi7P962YiW", "d770298903dbddab367e4e71346feced");
+        return mySynthesizer;
     }
+
+
 }

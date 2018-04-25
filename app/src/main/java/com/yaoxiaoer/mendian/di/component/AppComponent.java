@@ -2,6 +2,7 @@ package com.yaoxiaoer.mendian.di.component;
 
 import android.content.Context;
 
+import com.baidu.tts.client.SpeechSynthesizer;
 import com.yaoxiaoer.mendian.di.module.ApiModule;
 import com.yaoxiaoer.mendian.di.module.AppModule;
 import com.yaoxiaoer.mendian.http.HttpManager;
@@ -17,5 +18,8 @@ import dagger.Component;
 @Component(modules = {AppModule.class, ApiModule.class})
 public interface AppComponent {
     HttpManager httpManager();
+
     Context getContext();
+
+    SpeechSynthesizer getSpeechSynthesizer();
 }

@@ -24,8 +24,6 @@ import cn.jpush.android.api.JPushInterface;
 
 public class App extends Application {
     private AppComponent mAppComponent;
-    private SpeechSynthesizer mySynthesizer;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -53,19 +51,6 @@ public class App extends Application {
         JPushInterface.init(this);
         //数据库
         LitePal.initialize(this);
-        //语音初始化
-        initVoice();
-    }
-
-    private void initVoice() {
-        mySynthesizer = SpeechSynthesizer.getInstance();
-        mySynthesizer.setContext(this);
-        mySynthesizer.setAppId("11149254");
-        mySynthesizer.setApiKey("R9SkKAjFlBAo9GGi7P962YiW", "d770298903dbddab367e4e71346feced");
-    }
-
-    public SpeechSynthesizer getSpeechSynthesizer() {
-        return mySynthesizer;
     }
 
     @Override
