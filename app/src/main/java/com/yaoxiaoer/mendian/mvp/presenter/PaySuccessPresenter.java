@@ -42,7 +42,7 @@ public class PaySuccessPresenter extends DelayFinishPresenter<PaySuccessContract
         if (mySynthesizer != null && !TextUtils.isEmpty(msg)) {
             //声量
             mySynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");
-            mySynthesizer.initTts(TtsMode.MIX);
+            mySynthesizer.initTts(TtsMode.ONLINE);
             mySynthesizer.speak(msg);
         }
     }
