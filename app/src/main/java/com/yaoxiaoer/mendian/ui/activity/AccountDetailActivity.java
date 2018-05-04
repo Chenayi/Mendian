@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.base.BaseActivity;
@@ -150,10 +149,17 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
         //支付方式
         if (!TextUtils.isEmpty(detail.triggerType)) {
             String triggerType = detail.triggerType;
-            if (triggerType.equals("0")) {
-                tvPayWay.setText("二维码");
-            } else if (triggerType.equals("1")){
+            // 1 APP反扫用户
+            if (triggerType.equals(Order.TRIGGER_TYPE_APP_SCAN_USER)) {
                 tvPayWay.setText("反扫");
+            }
+            // 0 用户扫码支付
+            else if (triggerType.equals(Order.TRIGGER_TYPE_USER_SCAN_APP)) {
+                tvPayWay.setText("二维码");
+            }
+            //2 固定二维码
+            else if (triggerType.equals(Order.TRIGGER_TYPE_FIXED_QRCODE)) {
+                tvPayWay.setText("二维码");
             }
         }
 

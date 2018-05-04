@@ -43,6 +43,7 @@ import butterknife.OnTouch;
 
 /**
  * Created by Chenwy on 2018/2/6.
+ * 账单筛选dialog
  */
 
 public class AccountsOptionDialog extends BaseDialog {

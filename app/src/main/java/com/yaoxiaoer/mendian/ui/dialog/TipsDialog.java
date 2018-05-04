@@ -14,6 +14,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Chenwy on 2017/9/14.
+ * 提示dialog
  */
 
 public class TipsDialog extends BaseDialog {

@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * Created by Chenwy on 2018/2/5.
+ * 工具类
  */
 
 public class Utils {
@@ -22,7 +23,7 @@ public class Utils {
         calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - past);
         Date today = calendar.getTime();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String result = format.format(today) +" 00:00:00";
+        String result = format.format(today) + " 00:00:00";
         return result;
     }
 
@@ -31,7 +32,7 @@ public class Utils {
         calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - past);
         Date today = calendar.getTime();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String result = format.format(today) +" 23:59:59";
+        String result = format.format(today) + " 23:59:59";
         return result;
     }
 

@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 订单（自层）
+ * 订单（父层tab）
  * Created by Chenwy on 2018/1/30.
  */
 

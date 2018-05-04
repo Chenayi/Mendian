@@ -1,25 +1,19 @@
 package com.yaoxiaoer.mendian.base;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import com.gyf.barlibrary.ImmersionBar;
 import com.yaoxiaoer.mendian.App;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.ui.dialog.LoadingDialog;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
-
 import org.greenrobot.eventbus.EventBus;
-
 import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.yokeyword.fragmentation.SupportActivity;
@@ -51,6 +45,7 @@ public abstract class BaseActivity<P extends IPresenter> extends SupportActivity
         }
         initDatas();
     }
+
     @Override
     protected void onDestroy() {
         if (mBind != null) {
@@ -68,13 +63,28 @@ public abstract class BaseActivity<P extends IPresenter> extends SupportActivity
         super.onDestroy();
     }
 
-
+    /**
+     * 布局id
+     *
+     * @return
+     */
     protected abstract int getLayoutId();
 
+    /**
+     * AppComponent
+     *
+     * @param appComponent
+     */
     protected abstract void setupFragmentComponent(AppComponent appComponent);
 
+    /**
+     * 一些数据的初始化
+     */
     protected abstract void initDatas();
 
+    /**
+     * 沉浸式初始化
+     */
     protected void initImmersinBar() {
         mImmersionBar = ImmersionBar.with(this);
         mImmersionBar.fitsSystemWindows(true, R.color.colorPrimary)
@@ -83,26 +93,47 @@ public abstract class BaseActivity<P extends IPresenter> extends SupportActivity
                 .init();
     }
 
+    /**
+     * 键盘兼容沉浸式
+     *
+     * @return
+     */
     protected boolean keyboardEnable() {
         return false;
     }
 
 
+    /**
+     * 键盘模式
+     *
+     * @return
+     */
     protected int getKeyboardMode() {
         return WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
     }
 
 
+    /**
+     * 展示loading对话框
+     */
     protected void startLoading() {
         mLoading = LoadingDialog.newInstance();
         mLoading.show(getSupportFragmentManager());
     }
 
+    /**
+     * 展示loading对话框
+     *
+     * @param isBackDismiss
+     */
     protected void startLoading(boolean isBackDismiss) {
         mLoading = LoadingDialog.newInstance(isBackDismiss);
         mLoading.show(getSupportFragmentManager());
     }
 
+    /**
+     * 隐藏loading对话框
+     */
     protected void stopLoading() {
         if (mLoading != null) {
             mLoading.dismiss();
@@ -110,34 +141,43 @@ public abstract class BaseActivity<P extends IPresenter> extends SupportActivity
         }
     }
 
+    /**
+     * 是否开启eventbus
+     *
+     * @return
+     */
     protected boolean isLoadEventBus() {
         return false;
     }
 
+    /**
+     * activity 跳转
+     *
+     * @param cls
+     */
     protected void jumpActivity(Class cls) {
         Intent intent = new Intent(this, cls);
         startActivity(intent);
     }
 
+    /**
+     * activity 跳转
+     *
+     * @param cls
+     */
     protected void jumpActivity(Bundle bundle, Class cls) {
         Intent intent = new Intent(this, cls);
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
+    /**
+     * activity 跳转
+     *
+     * @param cls
+     */
     protected void jumpActivityForResult(int requestCode, Class cls) {
         Intent intent = new Intent(this, cls);
         startActivityForResult(intent, requestCode);
-    }
-
-    protected void hideKeyboard() {
-        InputMethodManager imm =
-                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (imm == null) return;
-        View view = getCurrentFocus();
-        if (view == null) {
-            view = new View(this);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

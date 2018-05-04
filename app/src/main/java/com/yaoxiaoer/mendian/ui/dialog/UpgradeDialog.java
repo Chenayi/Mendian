@@ -31,6 +31,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Chenwy on 2018/3/2.
+ * 更新 dialog
  */
 
 public class UpgradeDialog extends BaseDialog<UpgradePresenter> implements UpgradeContract.View {

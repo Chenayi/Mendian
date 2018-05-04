@@ -15,6 +15,7 @@ import butterknife.BindView;
 
 /**
  * Created by Chenwy on 2018/3/8.
+ * loading dialog
  */
 
 public class LoadingDialog extends BaseDialog {

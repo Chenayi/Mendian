@@ -2,6 +2,7 @@ package com.yaoxiaoer.mendian.utils;
 
 /**
  * Created by Chenwy on 2018/2/7.
+ * 订单常量
  */
 
 public class Order {
@@ -58,4 +59,18 @@ public class Order {
      * 微商城
      */
     public static final String SOURCE_WSC = "1";
+
+    //触发方式
+    /**
+     * 用户扫码支付
+     */
+    public static final String TRIGGER_TYPE_USER_SCAN_APP = "0";
+    /**
+     * App反扫用户
+     */
+    public static final String TRIGGER_TYPE_APP_SCAN_USER = "1";
+    /**
+     * 固定二维码
+     */
+    public static final String TRIGGER_TYPE_FIXED_QRCODE = "2";
 }

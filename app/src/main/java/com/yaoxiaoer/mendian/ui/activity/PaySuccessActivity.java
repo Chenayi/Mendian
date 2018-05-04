@@ -103,15 +103,19 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessPresenter> implem
         tvPayOrderCode.setText(mPayResultEntity.transactionId);
         //平台订单号
         tvPtOrderCode.setText(mPayResultEntity.orderCode);
-        //支付方式
+        //触发方式
         String triggerType = mPayResultEntity.triggerType;
         if (triggerType != null) {
             // 1 APP反扫用户
-            if (triggerType.equals("1")) {
+            if (triggerType.equals(Order.TRIGGER_TYPE_APP_SCAN_USER)) {
                 tvPayWay.setText("反扫");
             }
             // 0 用户扫码支付
-            else if (triggerType.equals("0")) {
+            else if (triggerType.equals(Order.TRIGGER_TYPE_USER_SCAN_APP)) {
+                tvPayWay.setText("二维码");
+            }
+            //2 固定二维码
+            else if (triggerType.equals(Order.TRIGGER_TYPE_FIXED_QRCODE)) {
                 tvPayWay.setText("二维码");
             }
         } else {

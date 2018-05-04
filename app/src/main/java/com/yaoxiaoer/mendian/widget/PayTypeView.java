@@ -5,14 +5,17 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.base.BaseRelativeLayout;
 import com.yaoxiaoer.mendian.utils.Order;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * Created by Chenwy on 2018/3/1.
+ * 支付渠道
  */
 
 public class PayTypeView extends BaseRelativeLayout {

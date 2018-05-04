@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OnKeyboardListener;
@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void OnClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                hideKeyboard();
+                KeyboardUtils.hideSoftInput(this);
                 loginUserView.hide();
                 String userName = loginUserView.getUserName();
                 String pwd = etPwd.getText().toString().trim();
