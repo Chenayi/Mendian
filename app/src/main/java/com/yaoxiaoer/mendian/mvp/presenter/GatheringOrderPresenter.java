@@ -1,6 +1,8 @@
 package com.yaoxiaoer.mendian.mvp.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
+
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.di.scope.ActivityScope;
@@ -63,14 +65,23 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
                     protected void onHandleSuccess(PayResultEntity payResultEntity) {
                         mView.hideLoading();
                         mView.scanPaySuccess(payResultEntity);
+
+                        //触发此接口让后台开始轮询支付结果
+                        if (!TextUtils.isEmpty(orderId)) {
+                            timequeryOrderpayOrnot(orderId);
+                        }
                     }
 
                     @Override
                     protected void onHandleError(int code, String msg) {
                         //用户需要输密码
-                        if (code == C.CODE_NEED_PAY_PASSWORD || (msg != null && msg.equals("需要用户输入支付密码"))) {
+                        if (code == C.CODE_NEED_PAY_PASSWORD) {
                             ToastUtils.showLong("需要用户输入支付密码");
-                            timequeryOrderpayOrnot(orderId);
+                            //触发此接口让后台开始轮询支付结果
+                            if (!TextUtils.isEmpty(orderId)) {
+                                timequeryOrderpayOrnot(orderId);
+                            }
+                            //轮询支付结果
                             requestPayResult(2, 2, orderId);
                         } else {
                             mView.hideLoading();

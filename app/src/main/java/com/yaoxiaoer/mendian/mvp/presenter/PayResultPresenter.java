@@ -86,7 +86,7 @@ public abstract class PayResultPresenter<V extends IView> extends BasePresenter<
     }
 
     /**
-     * 触发此接口让后台开始轮询
+     * 触发此接口让后台开始轮询支付结果
      */
     public void timequeryOrderpayOrnot(String orderId){
         mHttpManager.obtainRetrofitService(ApiService.class)
