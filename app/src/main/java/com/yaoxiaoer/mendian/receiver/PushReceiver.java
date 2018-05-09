@@ -11,6 +11,7 @@ import com.orhanobut.logger.Logger;
 import com.yaoxiaoer.mendian.BuildConfig;
 import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.event.AccountsFreeingEvent;
+import com.yaoxiaoer.mendian.event.GatheringEvent;
 import com.yaoxiaoer.mendian.event.PushOrderEvent;
 import com.yaoxiaoer.mendian.mvp.entity.ReceiverEntity;
 
@@ -27,6 +28,12 @@ public class PushReceiver extends BroadcastReceiver {
      * 新订单
      */
     private final String CODE_NEW_ORDER = "333";
+
+    /**
+     * 固定二维码收款
+     */
+    private final String FIXED_QRCODE_GATHERING = "222";
+
     /**
      * 多个账户冻结（按门店id）
      */
@@ -53,13 +60,17 @@ public class PushReceiver extends BroadcastReceiver {
                     if (entity.code.equals(CODE_NEW_ORDER)) {
                         EventBus.getDefault().post(new PushOrderEvent());
                     }
+                    //固定二维码收款
+                    else if (entity.code.equals(FIXED_QRCODE_GATHERING)) {
+                        EventBus.getDefault().post(new GatheringEvent(entity.message));
+                    }
                     //多个账户冻结（按门店id）
                     else if (entity.code.equals(CODE_ACCOUNTS_FREEING_STORE)) {
                         EventBus.getDefault().post(new AccountsFreeingEvent(entity.message));
                     }
                     //单个用户被冻结（按用户id）
-                    else if (entity.code.equals(CODE_ACCOUNTS_FREEING_SINGLE_USER)){
-                        if (entity.uid != null && entity.uid.equals(C.USER_ID+"")){
+                    else if (entity.code.equals(CODE_ACCOUNTS_FREEING_SINGLE_USER)) {
+                        if (entity.uid != null && entity.uid.equals(C.USER_ID + "")) {
                             EventBus.getDefault().post(new AccountsFreeingEvent(entity.message));
                         }
                     }

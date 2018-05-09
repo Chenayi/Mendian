@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.baidu.tts.client.SpeechSynthesizer;
@@ -21,6 +22,7 @@ import com.yaoxiaoer.mendian.di.component.DaggerMainComponent;
 import com.yaoxiaoer.mendian.di.module.MainModule;
 import com.yaoxiaoer.mendian.event.AccountsFreeingEvent;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
+import com.yaoxiaoer.mendian.event.GatheringEvent;
 import com.yaoxiaoer.mendian.event.PushOrderEvent;
 import com.yaoxiaoer.mendian.mvp.contract.MainContract;
 import com.yaoxiaoer.mendian.mvp.entity.ApkInfoEntity;
@@ -167,13 +169,24 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     /**
+     * 固定二维码收款
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiverGathering(GatheringEvent gatheringEvent) {
+        //语音播报
+        if (gatheringEvent != null && !TextUtils.isEmpty(gatheringEvent.msg)) {
+            mPresenter.playSpeech(gatheringEvent.msg);
+        }
+    }
+
+    /**
      * 账户冻结
      *
      * @param accountsFreeingEvent
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void accountsFreeing(AccountsFreeingEvent accountsFreeingEvent) {
-        if (mAccountFreeingDialog != null && mAccountFreeingDialog.getDialog().isShowing()){
+        if (mAccountFreeingDialog != null && mAccountFreeingDialog.getDialog().isShowing()) {
             mAccountFreeingDialog.dismiss();
             mAccountFreeingDialog = TipsDialog.newInstance(null, accountsFreeingEvent.msg, true);
             mAccountFreeingDialog.setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {

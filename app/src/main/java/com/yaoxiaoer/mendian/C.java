@@ -5,11 +5,15 @@ package com.yaoxiaoer.mendian;
  */
 
 public class C {
-//    public static final String BASE_URL = "http://192.168.40.233:8080/";
-    //内网
+    //内网1
+//    public static final String BASE_URL = "http://192.168.40.91:8080/";
+    //内网2
 //    public static final String BASE_URL = " http://192.168.60.233:8888/";
     //外网
-    public static final String BASE_URL = "http://183.6.163.226:8888";
+//    public static final String BASE_URL = "http://183.6.163.226:8888";
+    //域名
+    public static final String BASE_URL = "http://zf.yxejk.cn";
+
     public static final int PAGE_SIZE = 15;
     public static final String IS_LOGIN = "is_login";
     public static final String NEW_ORDER = "new_order";
