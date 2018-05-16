@@ -63,13 +63,14 @@
 
         <activity android:name=".ui.activity.MainActivity" />
         <activity android:name=".ui.activity.LoginActivity" />
-        <activity android:name=".ui.activity.PaySuccessActivity"></activity>
+        <activity android:name=".ui.activity.PaySuccessActivity"/>
         <activity android:name=".ui.activity.OrderDetailActivity" />
         <activity android:name=".ui.activity.GatheringWithOrderActivity" />
         <activity android:name=".ui.activity.QrcodeActivity" />
         <activity android:name=".ui.activity.SelfDeliveryActivity" />
-        <activity android:name=".ui.activity.AccountDetailActivity"></activity>
+        <activity android:name=".ui.activity.AccountDetailActivity"/>
         <activity android:name=".ui.activity.ScanActivity" />
+        <activity android:name=".ui.activity.InputRefundPwdActivity"/>
 
         <receiver
             android:name=".receiver.PushReceiver"

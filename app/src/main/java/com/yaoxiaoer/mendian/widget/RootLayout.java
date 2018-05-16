@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.yaoxiaoer.mendian.R;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -30,6 +31,8 @@ public class RootLayout extends LinearLayout {
     ImageView ivLeft;
     @BindView(R.id.iv_right)
     ImageView ivRight;
+    @BindView(R.id.tv_right)
+    TextView tvRight;
 
     private Context mContext;
     private final View mTitleBarView;
@@ -121,7 +124,7 @@ public class RootLayout extends LinearLayout {
         ViewGroup.LayoutParams lpTitle = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) mTitleBarHeight);
         mTitleBarView = LayoutInflater.from(context).inflate(R.layout.base_titlebar, null, false);
-        if (!isInEditMode()){
+        if (!isInEditMode()) {
             ScreenAdapterTools.getInstance().loadView((ViewGroup) mTitleBarView);
         }
         mTitleBarView.setBackgroundColor(mTitleBarColor);
@@ -149,6 +152,11 @@ public class RootLayout extends LinearLayout {
             ivRight.setVisibility(VISIBLE);
             ivRight.setImageResource(mTitleBarRightIcon);
         }
+
+        if (!TextUtils.isEmpty(mTitleBarRightText)) {
+            tvRight.setVisibility(VISIBLE);
+            tvRight.setText(mTitleBarRightText);
+        }
     }
 
     public RootLayout setTitle(String title) {
@@ -174,6 +182,12 @@ public class RootLayout extends LinearLayout {
     public RootLayout setOnRightOnClickListener(OnClickListener l) {
         if (ivRight != null && ivRight.getVisibility() == VISIBLE) {
             ivRight.setOnClickListener(l);
+            return this;
+        }
+
+
+        if (tvRight != null && tvRight.getVisibility() == VISIBLE){
+            tvRight.setOnClickListener(l);
         }
         return this;
     }

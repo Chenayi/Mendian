@@ -117,9 +117,9 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     @Override
     protected void refreshData() {
         //如果是未处理，去查一下是否已完成
-        if (mOrderStatus == Order.ORDER_NO_HANDLE){
+        if (mOrderStatus == Order.ORDER_NO_HANDLE) {
             mPresenter.requestPayResult(mOrderId);
-        }else {
+        } else {
             mPresenter.requestOrderDetail(mOrderId);
         }
     }
@@ -176,9 +176,11 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
                 jumpActivity(bundle, GatheringWithOrderActivity.class);
                 break;
             case R.id.btn_self_take:
-                TipsDialog.newInstance("注意说明", "自提发货等同于该订单已现金支付完成，" +
-                                "是否已收到货款现金？", ContextCompat.getColor(this, R.color.color_ff9600)
-                        , "是", "否")
+                TipsDialog.newInstance("注意说明",
+                        "自提发货等同于该订单已现金支付完成或微商城在线支付订单取货完成，请确认！",
+                        ContextCompat.getColor(this, R.color.color_ff9600),
+                        "是",
+                        "否")
                         .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
                             @Override
                             public void onSure() {
@@ -262,10 +264,10 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
             tvOrderStatus.setText("订单已完成");
             tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            if (!TextUtils.isEmpty(orderDetail.payType)){
+            if (!TextUtils.isEmpty(orderDetail.payType)) {
                 llPayType.setVisibility(View.VISIBLE);
                 setPayType(orderDetail.payType);
-            }else {
+            } else {
                 llPayType.setVisibility(View.GONE);
             }
         }
@@ -279,7 +281,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
             if (!TextUtils.isEmpty(orderDetail.payType)) {
                 llPayType.setVisibility(View.VISIBLE);
                 setPayType(orderDetail.payType);
-            }else {
+            } else {
                 llPayType.setVisibility(View.GONE);
             }
         }

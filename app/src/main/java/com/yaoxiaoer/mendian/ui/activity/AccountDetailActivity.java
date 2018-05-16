@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.base.BaseActivity;
@@ -19,6 +20,7 @@ import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.widget.RootLayout;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 
@@ -82,8 +84,7 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
                 .setOnRightOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EventBus.getDefault().post(new BackHomeEvent());
-                        finish();
+                        jumpActivity(InputRefundPwdActivity.class);
                     }
                 });
     }
@@ -165,5 +166,15 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
 
         //收款金额
         tvMoney.setText("收款金额：￥" + detail.orderPrice);
+    }
+
+    @Override
+    protected boolean isLoadEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void backHome(BackHomeEvent backHomeEvent){
+        finish();
     }
 }
