@@ -24,6 +24,6 @@ public class RefundPresenter extends BasePresenter<RefundContract.View> {
      * 提交退款
      */
     public void subRefund() {
-        ToastUtils.showShort("等待接口中哦...");
+        mView.refundSuccess();
     }
 }

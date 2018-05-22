@@ -1,8 +1,10 @@
 package com.yaoxiaoer.mendian.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -172,6 +174,21 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
                 helper.setText(R.id.tv_order_status, "已取消");
                 helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff552e));
                 break;
+        }
+
+        String paymentMethod = data.paymentMethod;
+        if (!TextUtils.isEmpty(paymentMethod)) {
+            //在线支付
+            if (paymentMethod.equals("1")) {
+                helper.setText(R.id.tv_payment_method, "在线支付")
+                        .setTextColor(R.id.tv_payment_method, ContextCompat.getColor(getContext(), R.color.color_333));
+            }
+
+            //到店支付
+            else if (paymentMethod.equals("0")) {
+                helper.setText(R.id.tv_payment_method, "到店支付")
+                        .setTextColor(R.id.tv_payment_method, Color.RED);
+            }
         }
     }
 

@@ -57,8 +57,8 @@ public class LoadingDialog extends BaseDialog {
         mDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (isBackDismiss){
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    if (isBackDismiss) {
                         dismiss();
                     }
                 }

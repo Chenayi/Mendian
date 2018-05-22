@@ -1,9 +1,11 @@
 package com.yaoxiaoer.mendian.ui.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +41,8 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPresenter, OrderDetailEntity.OrderGoodsListBean> implements OrderDetailContract.View {
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
+    @BindView(R.id.btn_gathering)
+    Button btnGathering;
 
     private View header1;
     private View foot;
@@ -288,6 +292,19 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         //未处理
         else {
             tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff9600));
+
+            String paymentMethod = orderDetail.paymentMethod;
+            if (!TextUtils.isEmpty(paymentMethod)) {
+                //在线支付
+                if (paymentMethod.equals("1")) {
+                    btnGathering.setVisibility(View.GONE);
+                }
+
+                //到店支付
+                else if (paymentMethod.equals("0")) {
+                    btnGathering.setVisibility(View.VISIBLE);
+                }
+            }
             llBottom.setVisibility(View.VISIBLE);
             tvOrderStatus.setVisibility(View.GONE);
             llPayType.setVisibility(View.GONE);

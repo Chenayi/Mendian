@@ -17,5 +17,6 @@ public class OrderEntity {
         public String submitOrderTimetoString;
         public int orderStatus;
         public int orderId;
+        public String paymentMethod;
     }
 }

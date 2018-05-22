@@ -88,7 +88,7 @@ public class UpgradeDialog extends BaseDialog<UpgradePresenter> implements Upgra
         mDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
                     if (!isDownloading && mApkInfo.getIsMust().equals("0")) {
                         dismiss();
                     }

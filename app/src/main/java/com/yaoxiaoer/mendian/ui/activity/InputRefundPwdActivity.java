@@ -13,6 +13,7 @@ import com.yaoxiaoer.mendian.di.module.RefundModule;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
 import com.yaoxiaoer.mendian.mvp.contract.RefundContract;
 import com.yaoxiaoer.mendian.mvp.presenter.RefundPresenter;
+import com.yaoxiaoer.mendian.ui.dialog.SimpleDialog;
 import com.yaoxiaoer.mendian.widget.RootLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -88,7 +89,16 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
 
     @Override
     public void refundSuccess() {
-
+        SimpleDialog.newInstance("已成功退款")
+                .setOnBackListener(new SimpleDialog.OnBackListener() {
+                    @Override
+                    public void onBack() {
+                        finish();
+                    }
+                })
+                .setMargin(52)
+                .setOutCancel(false)
+                .show(getSupportFragmentManager());
     }
 
     @Override
