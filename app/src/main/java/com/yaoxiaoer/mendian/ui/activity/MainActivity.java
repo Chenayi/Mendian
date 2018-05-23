@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                         break;
                     //账目
                     case 3:
-                        ((AccountsFragment) mVPMainAdapter.getItem(position)).resetWithRefresh();
+                        ((AccountsFragment) mVPMainAdapter.getItem(position)).resetWithRefresh(true);
                         break;
                 }
             }

@@ -14,6 +14,7 @@ import com.yaoxiaoer.mendian.base.BaseListFragment;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerAccountComponent;
 import com.yaoxiaoer.mendian.di.module.AccountModule;
+import com.yaoxiaoer.mendian.event.BackToAccountsEvent;
 import com.yaoxiaoer.mendian.mvp.contract.AccountContract;
 import com.yaoxiaoer.mendian.mvp.entity.AccountEntity;
 import com.yaoxiaoer.mendian.mvp.entity.CashierEntity;
@@ -24,6 +25,8 @@ import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
 import com.yaoxiaoer.mendian.widget.RootLayout;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -157,7 +160,7 @@ public class AccountsFragment extends BaseListFragment<AccountPresenter, Account
     }
 
 
-    public void resetWithRefresh() {
+    public void resetWithRefresh(boolean isShowLoading) {
         if (isAcquired) {
             mDayWhat = Order.TODAY;
             String nowDate = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd"));
@@ -169,7 +172,10 @@ public class AccountsFragment extends BaseListFragment<AccountPresenter, Account
             mCashiers = null;
             mChooseCashier = null;
 
-            startLoading();
+            if (isShowLoading){
+                startLoading();
+            }
+
             hideEmptyView();
             clearAll();
             pageNo = 1;
@@ -262,5 +268,15 @@ public class AccountsFragment extends BaseListFragment<AccountPresenter, Account
         cashiers.add(0, null);
         mCashiers = cashiers;
         showAccountsOptionDialog();
+    }
+
+    @Override
+    protected boolean isLoadEvenetBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void backToAccounts(BackToAccountsEvent backToAccountsEvent) {
+        resetWithRefresh(false);
     }
 }

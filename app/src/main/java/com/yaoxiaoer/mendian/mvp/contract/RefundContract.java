@@ -16,5 +16,10 @@ public interface RefundContract {
          * 退款成功
          */
         void refundSuccess();
+
+        /**
+         * 关闭
+         */
+        void close();
     }
 }

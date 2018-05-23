@@ -13,6 +13,7 @@ import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerAccountDetailComponent;
 import com.yaoxiaoer.mendian.di.module.AccountDetailModule;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
+import com.yaoxiaoer.mendian.event.BackToAccountsEvent;
 import com.yaoxiaoer.mendian.mvp.contract.AccountDetailContract;
 import com.yaoxiaoer.mendian.mvp.entity.AccountDetailEntity;
 import com.yaoxiaoer.mendian.mvp.presenter.AccountDetailPresenter;
@@ -174,7 +175,12 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
     }
 
     @Subscribe
-    public void backHome(BackHomeEvent backHomeEvent){
+    public void backHome(BackHomeEvent backHomeEvent) {
+        finish();
+    }
+
+    @Subscribe
+    public void backToAccounts(BackToAccountsEvent backToAccountsEvent) {
         finish();
     }
 }

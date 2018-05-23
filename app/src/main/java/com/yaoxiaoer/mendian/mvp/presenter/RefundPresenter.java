@@ -14,10 +14,19 @@ import javax.inject.Inject;
  * Created by Chenwy on 2018/5/16.
  */
 @ActivityScope
-public class RefundPresenter extends BasePresenter<RefundContract.View> {
+public class RefundPresenter extends DelayFinishPresenter<RefundContract.View> {
     @Inject
     public RefundPresenter(Context context, RefundContract.View view, HttpManager httpManager) {
         super(context, view, httpManager);
+    }
+
+    @Override
+    protected void updateSecond(int second) {
+    }
+
+    @Override
+    protected void close() {
+        mView.close();
     }
 
     /**

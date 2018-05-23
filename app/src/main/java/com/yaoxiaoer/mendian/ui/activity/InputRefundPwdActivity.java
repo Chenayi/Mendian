@@ -11,6 +11,7 @@ import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerRefundComponent;
 import com.yaoxiaoer.mendian.di.module.RefundModule;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
+import com.yaoxiaoer.mendian.event.BackToAccountsEvent;
 import com.yaoxiaoer.mendian.mvp.contract.RefundContract;
 import com.yaoxiaoer.mendian.mvp.presenter.RefundPresenter;
 import com.yaoxiaoer.mendian.ui.dialog.SimpleDialog;
@@ -93,12 +94,20 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
                 .setOnBackListener(new SimpleDialog.OnBackListener() {
                     @Override
                     public void onBack() {
-                        finish();
+                        mPresenter.disposable();
+                        close();
                     }
                 })
                 .setMargin(52)
                 .setOutCancel(false)
                 .show(getSupportFragmentManager());
+        mPresenter.delayFinish(2);
+    }
+
+    @Override
+    public void close() {
+        EventBus.getDefault().post(new BackToAccountsEvent());
+        finish();
     }
 
     @Override
