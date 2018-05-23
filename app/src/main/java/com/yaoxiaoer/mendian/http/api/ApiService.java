@@ -12,6 +12,7 @@ import com.yaoxiaoer.mendian.mvp.entity.OrderDetailEntity;
 import com.yaoxiaoer.mendian.mvp.entity.OrderEntity;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 import com.yaoxiaoer.mendian.mvp.entity.QrcodeEntity;
+import com.yaoxiaoer.mendian.mvp.entity.RefundEntity;
 import com.yaoxiaoer.mendian.mvp.entity.UserEntity;
 
 import java.util.Map;
@@ -199,6 +200,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("timequeryOrderpayOrnot.shtml")
     Observable<BaseResponse<NullEntity>> timequeryOrderpayOrnot(@Field("orderId") String orderId, @Field("userId") long userId);
+
+    @FormUrlEncoded
+    @POST("orderRefundapp.shtml")
+    Observable<BaseResponse<RefundEntity>> refund(@FieldMap Map<String, Object> params);
 
     /**
      * 下载文件

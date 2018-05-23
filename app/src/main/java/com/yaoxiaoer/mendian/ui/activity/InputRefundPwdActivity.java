@@ -31,6 +31,8 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
     @BindView(R.id.et_password)
     EditText etPassword;
 
+    private String orderId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_input_refund;
@@ -47,6 +49,7 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
 
     @Override
     protected void initDatas() {
+        orderId = getIntent().getExtras().getString("orderId");
         RootLayout.getInstance(this)
                 .setOnRightOnClickListener(new View.OnClickListener() {
                     @Override
@@ -61,8 +64,9 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_sure:
-                if (configPassword()) {
-                    mPresenter.subRefund();
+                String pwd = etPassword.getText().toString().trim();
+                if (configPassword(pwd)) {
+                    mPresenter.subRefund(orderId, pwd);
                 }
                 break;
         }
@@ -74,8 +78,7 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
      *
      * @return
      */
-    private boolean configPassword() {
-        String pwd = etPassword.getText().toString().trim();
+    private boolean configPassword(String pwd) {
         if (TextUtils.isEmpty(pwd)) {
             ToastUtils.showShort("请输入密码");
             return false;

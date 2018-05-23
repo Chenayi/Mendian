@@ -85,7 +85,9 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
                 .setOnRightOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        jumpActivity(InputRefundPwdActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("orderId", orderId);
+                        jumpActivity(bundle, InputRefundPwdActivity.class);
                     }
                 });
     }
