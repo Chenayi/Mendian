@@ -6,7 +6,7 @@ package com.yaoxiaoer.mendian;
 
 public class C {
     //内网1
-    public static final String BASE_URL = "http://192.168.40.91:8080/";
+    public static final String BASE_URL = "http://192.168.40.91:8081/";
     //内网2
 //    public static final String BASE_URL = " http://192.168.60.233:8888/";
     //外网

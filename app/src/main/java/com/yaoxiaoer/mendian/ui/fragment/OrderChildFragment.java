@@ -162,6 +162,7 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
         switch (data.orderStatus) {
             //未处理
             case Order.ORDER_NO_HANDLE:
+            case Order.ORDER_NO_HANDLE2:
                 helper.setText(R.id.tv_order_status, "未处理");
                 helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
                 break;

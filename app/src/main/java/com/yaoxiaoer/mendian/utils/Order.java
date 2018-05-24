@@ -41,6 +41,7 @@ public class Order {
      * 未处理
      */
     public static final int ORDER_NO_HANDLE = 0;
+    public static final int ORDER_NO_HANDLE2 = 1;
     /**
      * 已完成
      */

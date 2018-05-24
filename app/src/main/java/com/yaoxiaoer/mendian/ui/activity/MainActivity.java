@@ -169,6 +169,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     /**
+     * 微商城退款
+     */
+    public void onReceiveRefund(){
+
+    }
+
+    /**
      * 固定二维码收款
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
