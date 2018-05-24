@@ -115,16 +115,16 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
 
     @Override
     public void showLoading() {
-
+        startLoading(false);
     }
 
     @Override
     public void hideLoading() {
-
+        stopLoading();
     }
 
     @Override
     public void onError(int code, String msg) {
-
+        ToastUtils.showShort(msg);
     }
 }

@@ -172,7 +172,7 @@ public class AccountsFragment extends BaseListFragment<AccountPresenter, Account
             mCashiers = null;
             mChooseCashier = null;
 
-            if (isShowLoading){
+            if (isShowLoading) {
                 startLoading();
             }
 
@@ -206,6 +206,14 @@ public class AccountsFragment extends BaseListFragment<AccountPresenter, Account
         } else if (payType.equals(Order.PAY_TYPE_CASH)) {
             helper.setText(R.id.tv_pay_type, "现")
                     .setBackgroundColor(R.id.tv_pay_type, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+        }
+
+        //退款状态
+        int orderStatus = data.orderStatus;
+        helper.setGone(R.id.tv_refund_status, orderStatus == 18);
+        //退款成功
+        if (orderStatus == 18) {
+            helper.setText(R.id.tv_refund_status, "退款成功");
         }
     }
 

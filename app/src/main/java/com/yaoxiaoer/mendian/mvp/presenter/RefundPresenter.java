@@ -5,6 +5,7 @@ import android.content.Context;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.orhanobut.logger.Logger;
 import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.base.BasePresenter;
 import com.yaoxiaoer.mendian.di.scope.ActivityScope;
@@ -45,38 +46,40 @@ public class RefundPresenter extends DelayFinishPresenter<RefundContract.View> {
      * 提交退款
      */
     public void subRefund(String orderId, String refundPwdkey) {
-//        mHttpManager.obtainRetrofitService(ApiService.class)
-//                .refund((ParamsUtils
-//                        .params("userId", C.USER_ID)
-//                        .params("randomNum", Utils.getEncryptRadomNum())
-//                        .params("orderId", orderId)
-//                        .params("refundPwdkey", getEncodePwdKey(refundPwdkey))
-//                        .commitParams()))
-//                .compose(RxScheduler.<BaseResponse<RefundEntity>>compose())
-//                .subscribe(new BaseObserver<RefundEntity>(mContext) {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        addDisposable(d);
-//                    }
-//
-//                    @Override
-//                    protected void onHandleSuccess(RefundEntity refundEntity) {
-//                    }
-//
-//                    @Override
-//                    protected void onHandleError(int code, String msg) {
-//                    }
-//
-//                    @Override
-//                    protected void onHandleAfter() {
-//                    }
-//                });
+        mHttpManager.obtainRetrofitService(ApiService.class)
+                .refund((ParamsUtils
+                        .params("userId", C.USER_ID)
+                        .params("randomNum", Utils.getEncryptRadomNum())
+                        .params("orderId", orderId)
+                        .params("refundPwdkey", getEncodePwdKey(refundPwdkey))
+                        .commitParams()))
+                .compose(RxScheduler.<BaseResponse<RefundEntity>>compose())
+                .subscribe(new BaseObserver<RefundEntity>(mContext) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mView.showLoading();
+                        addDisposable(d);
+                    }
 
-        mView.refundSuccess();
+                    @Override
+                    protected void onHandleSuccess(RefundEntity refundEntity) {
+                        mView.refundSuccess();
+                    }
+
+                    @Override
+                    protected void onHandleError(int code, String msg) {
+                        mView.onError(code, msg);
+                    }
+
+                    @Override
+                    protected void onHandleAfter() {
+                        mView.hideLoading();
+                    }
+                });
     }
 
 
     public String getEncodePwdKey(String refundPwdkey) {
-        return EncryptUtils.encryptMD5ToString("@#$@" + refundPwdkey);
+        return EncryptUtils.encryptMD5ToString("@#$@" + refundPwdkey).toLowerCase();
     }
 }

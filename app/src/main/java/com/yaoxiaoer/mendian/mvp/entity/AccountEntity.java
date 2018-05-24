@@ -10,7 +10,7 @@ public class AccountEntity {
     public List<Account> list;
     public Sum sum;
 
-    public static class Sum{
+    public static class Sum {
         public String orderNumbers;
         public String sumPrice;
     }
@@ -24,5 +24,6 @@ public class AccountEntity {
         public String orderPrice;
         public String timeEndToString;
         public String orderId;
+        public int orderStatus;
     }
 }
