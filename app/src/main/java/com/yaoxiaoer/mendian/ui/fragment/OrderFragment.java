@@ -3,6 +3,7 @@ package com.yaoxiaoer.mendian.ui.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
@@ -16,7 +17,9 @@ import com.yaoxiaoer.mendian.ui.dialog.OrderOptionDialog;
 import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
 import com.yaoxiaoer.mendian.widget.RootLayout;
+
 import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +69,7 @@ public class OrderFragment extends BaseFragment {
      */
     private int mDayWhat = Order.TODAY;
 
-    private String[] mTitles = new String[]{"全部", "未处理", "已完成", "已取消"};
+    private String[] mTitles = new String[]{"全部", "待退款", "未处理", "已完成", "已取消"};
     private List<Fragment> fragments;
 
     {
@@ -175,11 +178,11 @@ public class OrderFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (isOrderStatusChange){
+        if (isOrderStatusChange) {
             int currentItem = vp.getCurrentItem();
-            if (currentItem == 0 || currentItem == 1){
-                if (viewPagerAdapter != null){
-                    ((OrderChildFragment)viewPagerAdapter.getItem(currentItem)).refreshOrder();
+            if (currentItem == 0 || currentItem == 1) {
+                if (viewPagerAdapter != null) {
+                    ((OrderChildFragment) viewPagerAdapter.getItem(currentItem)).refreshOrder();
                 }
             }
             isOrderStatusChange = false;

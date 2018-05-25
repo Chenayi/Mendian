@@ -76,13 +76,20 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
         Bundle arguments = getArguments();
         int p = arguments.getInt("p");
         switch (p) {
+            //待退款
             case 1:
+                mStatus = String.valueOf(Order.ORDER_WAIT_REFUND);
+                break;
+            //未处理
+            case 2:
                 mStatus = String.valueOf(Order.ORDER_NO_HANDLE);
                 break;
-            case 2:
+            //已完成
+            case 3:
                 mStatus = String.valueOf(Order.ORDER_FINISHED);
                 break;
-            case 3:
+            //已取消
+            case 4:
                 mStatus = String.valueOf(Order.ORDER_CANCELED);
                 break;
         }
@@ -171,9 +178,15 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
                 helper.setText(R.id.tv_order_status, "已完成");
                 helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_37c4a4));
                 break;
+            //已取消
             case Order.ORDER_CANCELED:
                 helper.setText(R.id.tv_order_status, "已取消");
                 helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff552e));
+                break;
+            //待退款
+            case Order.ORDER_WAIT_REFUND:
+                helper.setText(R.id.tv_order_status, "待退款");
+                helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
                 break;
         }
 

@@ -50,6 +50,10 @@ public class Order {
      * 已取消
      */
     public static final int ORDER_CANCELED = 4;
+    /**
+     * 待退款
+     */
+    public static final int ORDER_WAIT_REFUND = 15;
 
     /**
      * 快速支付（门店自有）

@@ -275,6 +275,20 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
                 llPayType.setVisibility(View.GONE);
             }
         }
+        //待退款
+        else if (orderDetail.orderStatus == Order.ORDER_WAIT_REFUND){
+            llBottom.setVisibility(View.GONE);
+            tvOrderStatus.setVisibility(View.VISIBLE);
+            tvOrderStatus.setText("订单待退款");
+            tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.red));
+            if (!TextUtils.isEmpty(orderDetail.payType)) {
+                llPayType.setVisibility(View.VISIBLE);
+                setPayType(orderDetail.payType);
+            } else {
+                llPayType.setVisibility(View.GONE);
+            }
+        }
         //已取消
         else if (orderDetail.orderStatus == Order.ORDER_CANCELED) {
             llBottom.setVisibility(View.GONE);
