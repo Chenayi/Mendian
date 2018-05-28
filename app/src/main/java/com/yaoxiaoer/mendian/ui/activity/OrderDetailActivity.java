@@ -432,6 +432,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         }
     }
 
+    //确认取货成功
     @Override
     public void selfDeliverySuccess(PayResultEntity payResultEntity) {
         mOrderStatus = Order.ORDER_FINISHED;
@@ -439,6 +440,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         EventBus.getDefault().post(new OrderStatusChangeEvent());
     }
 
+    //确认取货失败
     @Override
     public void onSelfDeliveryError(int code, String msg) {
         ToastUtils.showShort(msg);
