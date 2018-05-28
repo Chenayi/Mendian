@@ -1,5 +1,6 @@
 package com.yaoxiaoer.mendian.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,7 @@ import com.yaoxiaoer.mendian.base.BaseTitleBarListActivity;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerOrderDetailComponent;
 import com.yaoxiaoer.mendian.di.module.OrderDetailModule;
+import com.yaoxiaoer.mendian.event.OrderStatusChangeEvent;
 import com.yaoxiaoer.mendian.mvp.contract.OrderDetailContract;
 import com.yaoxiaoer.mendian.mvp.entity.OrderDetailEntity;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
@@ -41,8 +43,10 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPresenter, OrderDetailEntity.OrderGoodsListBean> implements OrderDetailContract.View {
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
-    @BindView(R.id.btn_gathering)
-    Button btnGathering;
+    @BindView(R.id.btn_left)
+    Button btnLeft;
+    @BindView(R.id.btn_right)
+    Button btnRight;
 
     private View header1;
     private View foot;
@@ -61,6 +65,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     private int mOrderId;
     private int mOrderStatus;
     private String mOrderPrice;
+    private String mPayType;
     private List<OrderDetailEntity.OrderGoodsListBean> mOrderGoodsList;
 
     @Override
@@ -169,36 +174,70 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         return "暂无相关数据";
     }
 
-    @OnClick({R.id.btn_gathering, R.id.btn_self_take})
+    @OnClick({R.id.btn_left, R.id.btn_right})
     public void onClick(View v) {
+        Bundle bundle;
         switch (v.getId()) {
-            case R.id.btn_gathering:
-                Bundle bundle = new Bundle();
+            case R.id.btn_left:
+                //确认退款
+                bundle = new Bundle();
                 bundle.putString("orderId", mOrderId + "");
-                bundle.putString("orderPrice", mOrderPrice);
-                bundle.putSerializable("orderGoods", (Serializable) mOrderGoodsList);
-                jumpActivity(bundle, GatheringWithOrderActivity.class);
+                jumpActivityForResult(122, bundle, InputRefundPwdActivity.class);
                 break;
-            case R.id.btn_self_take:
-                TipsDialog.newInstance("注意说明",
-                        "自提发货等同于该订单已现金支付完成或微商城在线支付订单取货完成，请确认！",
-                        ContextCompat.getColor(this, R.color.color_ff9600),
-                        "是",
-                        "否")
-                        .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
-                            @Override
-                            public void onSure() {
-                                mPresenter.selfDelivery(String.valueOf(mOrderId));
-                            }
-
-                            @Override
-                            public void onCancel() {
-
-                            }
-                        })
-                        .show(getSupportFragmentManager());
+            case R.id.btn_right:
+                if (mOrderStatus == Order.ORDER_NO_HANDLE || mOrderStatus == Order.ORDER_NO_HANDLE2
+                        || mOrderStatus == Order.ORDER_REFUSE_REFUND) {
+                    showPickupTips();
+                }
+                //拒绝退款
+                else if (mOrderStatus == Order.ORDER_WAIT_REFUND || mOrderStatus == Order.ORDER_REFUND_FAIL) {
+                    bundle = new Bundle();
+                    bundle.putString("orderId", mOrderId + "");
+                    bundle.putBoolean("isRefuse", true);
+                    jumpActivityForResult(122, bundle, InputRefundPwdActivity.class);
+                }
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //退款成功
+        if (requestCode == 122 && resultCode == RESULT_OK) {
+            mOrderStatus = Order.ORDER_REFUND_SUCCESS;
+            orderRefundSuccess();
+            EventBus.getDefault().post(new OrderStatusChangeEvent());
+        }
+        //拒绝退款
+        else if (requestCode == 122 && resultCode == 222) {
+            mOrderStatus = Order.ORDER_REFUSE_REFUND;
+            orderWaitPickup();
+            EventBus.getDefault().post(new OrderStatusChangeEvent());
+        }
+    }
+
+    /**
+     * 取货提示
+     */
+    private void showPickupTips() {
+        TipsDialog.newInstance("注意说明",
+                "确认取货操作不可还原，请确认已收款并将商品交给用户！",
+                ContextCompat.getColor(this, R.color.color_ff9600),
+                "是",
+                "否")
+                .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
+                    @Override
+                    public void onSure() {
+                        mPresenter.selfDelivery(String.valueOf(mOrderId));
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                })
+                .show(getSupportFragmentManager());
     }
 
     @Override
@@ -233,6 +272,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
 
         OrderDetailEntity.OrderDetailBean orderDetail = orderDetailEntity.getOrderDetail();
         mOrderPrice = orderDetail.getOrderPrice();
+        mPayType = orderDetail.payType;
         //订单号
         if (!TextUtils.isEmpty(orderDetail.getOrderCode())) {
             tvOrderCode.setText(orderDetail.getOrderCode());
@@ -261,70 +301,117 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         //自提地址
         tvAddress.setText(TextUtils.isEmpty(orderDetail.storeAddress) ? "无" : orderDetail.storeAddress);
         //订单状态
-        //已完成
-        if (orderDetail.orderStatus == Order.ORDER_FINISHED) {
-            llBottom.setVisibility(View.GONE);
-            tvOrderStatus.setVisibility(View.VISIBLE);
-            tvOrderStatus.setText("订单已完成");
-            tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            if (!TextUtils.isEmpty(orderDetail.payType)) {
-                llPayType.setVisibility(View.VISIBLE);
-                setPayType(orderDetail.payType);
-            } else {
-                llPayType.setVisibility(View.GONE);
-            }
-        }
-        //待退款
-        else if (orderDetail.orderStatus == Order.ORDER_WAIT_REFUND){
-            llBottom.setVisibility(View.GONE);
-            tvOrderStatus.setVisibility(View.VISIBLE);
-            tvOrderStatus.setText("订单待退款");
-            tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
-            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.red));
-            if (!TextUtils.isEmpty(orderDetail.payType)) {
-                llPayType.setVisibility(View.VISIBLE);
-                setPayType(orderDetail.payType);
-            } else {
-                llPayType.setVisibility(View.GONE);
-            }
-        }
-        //已取消
-        else if (orderDetail.orderStatus == Order.ORDER_CANCELED) {
-            llBottom.setVisibility(View.GONE);
-            tvOrderStatus.setVisibility(View.VISIBLE);
-            tvOrderStatus.setText("订单已取消");
-            tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.color_ff552e));
-            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff552e));
-            if (!TextUtils.isEmpty(orderDetail.payType)) {
-                llPayType.setVisibility(View.VISIBLE);
-                setPayType(orderDetail.payType);
-            } else {
-                llPayType.setVisibility(View.GONE);
-            }
-        }
-        //未处理
-        else {
-            tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff9600));
-
-            String paymentMethod = orderDetail.paymentMethod;
-            if (!TextUtils.isEmpty(paymentMethod)) {
-                //在线支付
-                if (paymentMethod.equals("1")) {
-                    btnGathering.setVisibility(View.GONE);
+        mOrderStatus = orderDetail.orderStatus;
+        switch (mOrderStatus) {
+            //未处理
+            case Order.ORDER_NO_HANDLE:
+            case Order.ORDER_NO_HANDLE2:
+                orderWaitPickup();
+                break;
+            //已取消
+            case Order.ORDER_CANCELED:
+                llBottom.setVisibility(View.GONE);
+                tvOrderStatus.setVisibility(View.VISIBLE);
+                tvOrderStatus.setText("订单已取消");
+                tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.color_ff552e));
+                tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff552e));
+                if (!TextUtils.isEmpty(orderDetail.payType)) {
+                    llPayType.setVisibility(View.VISIBLE);
+                    setPayType(orderDetail.payType);
+                } else {
+                    llPayType.setVisibility(View.GONE);
                 }
-
-                //到店支付
-                else if (paymentMethod.equals("0")) {
-                    btnGathering.setVisibility(View.VISIBLE);
-                }
-            }
-            llBottom.setVisibility(View.VISIBLE);
-            tvOrderStatus.setVisibility(View.GONE);
-            llPayType.setVisibility(View.GONE);
+                break;
+            //订单已完成
+            case Order.ORDER_FINISHED:
+                orderFinish();
+                break;
+            //退款失败
+            case Order.ORDER_REFUND_FAIL:
+                orderWaitRefund();
+                break;
+            //退款成功
+            case Order.ORDER_REFUND_SUCCESS:
+                orderRefundSuccess();
+                break;
+            //拒绝退款
+            case Order.ORDER_REFUSE_REFUND:
+                orderWaitPickup();
+                break;
+            //待退款
+            case Order.ORDER_WAIT_REFUND:
+                orderWaitRefund();
+                break;
         }
 
         tvPayCountMoney.setText("实付款：￥" + mOrderPrice);
+    }
+
+    /**
+     * 订单待退款
+     */
+    private void orderWaitRefund() {
+        tvOrderStatus.setVisibility(View.GONE);
+        llBottom.setVisibility(View.VISIBLE);
+        btnLeft.setVisibility(View.VISIBLE);
+        btnRight.setVisibility(View.VISIBLE);
+        btnLeft.setText("确认退款");
+        btnRight.setText("拒绝退款");
+
+        tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff9600));
+        if (!TextUtils.isEmpty(mPayType)) {
+            llPayType.setVisibility(View.VISIBLE);
+            setPayType(mPayType);
+        } else {
+            llPayType.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 订单待确认取货
+     */
+    private void orderWaitPickup() {
+        tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff9600));
+        btnLeft.setVisibility(View.GONE);
+        btnRight.setVisibility(View.VISIBLE);
+        btnRight.setText("确认取货");
+        llBottom.setVisibility(View.VISIBLE);
+        tvOrderStatus.setVisibility(View.GONE);
+        llPayType.setVisibility(View.GONE);
+    }
+
+    /**
+     * 订单退款成功
+     */
+    private void orderRefundSuccess() {
+        llBottom.setVisibility(View.GONE);
+        tvOrderStatus.setVisibility(View.VISIBLE);
+        tvOrderStatus.setText("订单退款成功");
+        tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+        tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.red));
+        if (!TextUtils.isEmpty(mPayType)) {
+            llPayType.setVisibility(View.VISIBLE);
+            setPayType(mPayType);
+        } else {
+            llPayType.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 订单已完成
+     */
+    private void orderFinish() {
+        llBottom.setVisibility(View.GONE);
+        tvOrderStatus.setVisibility(View.VISIBLE);
+        tvOrderStatus.setText("订单已完成");
+        tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        if (!TextUtils.isEmpty(mPayType)) {
+            llPayType.setVisibility(View.VISIBLE);
+            setPayType(mPayType);
+        } else {
+            llPayType.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -347,9 +434,9 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
 
     @Override
     public void selfDeliverySuccess(PayResultEntity payResultEntity) {
-        Bundle bundle = new Bundle();
-        bundle.putString("orderCode", payResultEntity.orderCode);
-        jumpActivity(bundle, SelfDeliveryActivity.class);
+        mOrderStatus = Order.ORDER_FINISHED;
+        orderFinish();
+        EventBus.getDefault().post(new OrderStatusChangeEvent());
     }
 
     @Override

@@ -201,9 +201,23 @@ public interface ApiService {
     @POST("timequeryOrderpayOrnot.shtml")
     Observable<BaseResponse<NullEntity>> timequeryOrderpayOrnot(@Field("orderId") String orderId, @Field("userId") long userId);
 
+    /**
+     * 退款
+     * @param params
+     * @return
+     */
     @FormUrlEncoded
     @POST("orderRefundapp.shtml")
     Observable<BaseResponse<RefundEntity>> refund(@FieldMap Map<String, Object> params);
+
+    /**
+     * 拒绝退款
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("orderRefundappRefuse.shtml")
+    Observable<BaseResponse<RefundEntity>> refuseRefund(@FieldMap Map<String, Object> params);
 
     /**
      * 下载文件

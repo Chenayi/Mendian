@@ -18,6 +18,11 @@ public interface RefundContract {
         void refundSuccess();
 
         /**
+         * 拒绝退款成功
+         */
+        void refuseRefundSuccess();
+
+        /**
          * 关闭
          */
         void close();

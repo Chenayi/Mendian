@@ -69,7 +69,7 @@ public class OrderFragment extends BaseFragment {
      */
     private int mDayWhat = Order.TODAY;
 
-    private String[] mTitles = new String[]{"全部", "待退款", "未处理", "已完成", "已取消"};
+    private String[] mTitles = new String[]{"全部", "未处理", "已完成", "已取消", "退款"};
     private List<Fragment> fragments;
 
     {

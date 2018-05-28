@@ -33,6 +33,11 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
 
     private String orderId;
 
+    /**
+     * 是否拒绝退款
+     */
+    private boolean isRefuse;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_input_refund;
@@ -49,6 +54,7 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
 
     @Override
     protected void initDatas() {
+        isRefuse = getIntent().getExtras().getBoolean("isRefuse");
         orderId = getIntent().getExtras().getString("orderId");
         RootLayout.getInstance(this)
                 .setOnRightOnClickListener(new View.OnClickListener() {
@@ -66,7 +72,11 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
             case R.id.btn_sure:
                 String pwd = etPassword.getText().toString().trim();
                 if (configPassword(pwd)) {
-                    mPresenter.subRefund(orderId, pwd);
+                    if (isRefuse) {
+                        mPresenter.refuseRefund(orderId, pwd);
+                    } else {
+                        mPresenter.subRefund(orderId, pwd);
+                    }
                 }
                 break;
         }
@@ -108,9 +118,31 @@ public class InputRefundPwdActivity extends BaseActivity<RefundPresenter> implem
     }
 
     @Override
+    public void refuseRefundSuccess() {
+        SimpleDialog.newInstance("已拒绝退款")
+                .setOnBackListener(new SimpleDialog.OnBackListener() {
+                    @Override
+                    public void onBack() {
+                        mPresenter.disposable();
+                        close();
+                    }
+                })
+                .setMargin(52)
+                .setOutCancel(false)
+                .show(getSupportFragmentManager());
+        mPresenter.delayFinish(2);
+    }
+
+    @Override
     public void close() {
-        EventBus.getDefault().post(new BackToAccountsEvent());
-        finish();
+        if (!isRefuse){
+            EventBus.getDefault().post(new BackToAccountsEvent());
+            setResult(RESULT_OK);
+            finish();
+        }else {
+            setResult(222);
+            finish();
+        }
     }
 
     @Override

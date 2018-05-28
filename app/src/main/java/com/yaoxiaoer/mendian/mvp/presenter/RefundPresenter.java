@@ -78,6 +78,43 @@ public class RefundPresenter extends DelayFinishPresenter<RefundContract.View> {
                 });
     }
 
+    /**
+     * 拒绝退款
+     * @return
+     */
+    public void refuseRefund(String orderId, String refundPwdkey){
+        mHttpManager.obtainRetrofitService(ApiService.class)
+                .refuseRefund((ParamsUtils
+                        .params("userId", C.USER_ID)
+                        .params("randomNum", Utils.getEncryptRadomNum())
+                        .params("orderId", orderId)
+                        .params("refundPwdkey", getEncodePwdKey(refundPwdkey))
+                        .commitParams()))
+                .compose(RxScheduler.<BaseResponse<RefundEntity>>compose())
+                .subscribe(new BaseObserver<RefundEntity>(mContext) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mView.showLoading();
+                        addDisposable(d);
+                    }
+
+                    @Override
+                    protected void onHandleSuccess(RefundEntity refundEntity) {
+                        mView.refuseRefundSuccess();
+                    }
+
+                    @Override
+                    protected void onHandleError(int code, String msg) {
+                        mView.onError(code, msg);
+                    }
+
+                    @Override
+                    protected void onHandleAfter() {
+                        mView.hideLoading();
+                    }
+                });
+    }
+
 
     public String getEncodePwdKey(String refundPwdkey) {
         return EncryptUtils.encryptMD5ToString("@#$@" + refundPwdkey).toLowerCase();

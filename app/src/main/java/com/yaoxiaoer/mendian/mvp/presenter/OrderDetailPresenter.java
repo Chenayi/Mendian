@@ -102,7 +102,7 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailContract.View
     }
 
     /**
-     * 自提
+     * 确认取货
      */
     public void selfDelivery(String orderId) {
         mView.showLoading();
@@ -118,6 +118,7 @@ public class OrderDetailPresenter extends BasePresenter<OrderDetailContract.View
                     @Override
                     protected void onHandleSuccess(PayResultEntity payResultEntity) {
                         mView.selfDeliverySuccess(payResultEntity);
+                        EventBus.getDefault().post(new OrderStatusChangeEvent());
                     }
 
                     @Override

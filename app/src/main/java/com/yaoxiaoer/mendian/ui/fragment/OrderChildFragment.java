@@ -62,6 +62,11 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
      */
     private String mStatus;
 
+    /**
+     * tab position
+     */
+    private int p;
+
     public static OrderChildFragment newInstance(int p) {
         Bundle args = new Bundle();
         args.putInt("p", p);
@@ -74,23 +79,23 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        int p = arguments.getInt("p");
+        p = arguments.getInt("p");
         switch (p) {
-            //待退款
-            case 1:
-                mStatus = String.valueOf(Order.ORDER_WAIT_REFUND);
-                break;
             //未处理
-            case 2:
-                mStatus = String.valueOf(Order.ORDER_NO_HANDLE);
+            case 1:
+                mStatus = "99";
                 break;
             //已完成
-            case 3:
+            case 2:
                 mStatus = String.valueOf(Order.ORDER_FINISHED);
                 break;
             //已取消
-            case 4:
+            case 3:
                 mStatus = String.valueOf(Order.ORDER_CANCELED);
+                break;
+            //退款
+            case 4:
+                mStatus = "100";
                 break;
         }
 
@@ -165,31 +170,50 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
                 .setText(R.id.tv_order_price, "￥" + data.orderPrice)
                 .setGone(R.id.top_line, helper.getLayoutPosition() == 0);
 
-
-        switch (data.orderStatus) {
-            //未处理
-            case Order.ORDER_NO_HANDLE:
-            case Order.ORDER_NO_HANDLE2:
-                helper.setText(R.id.tv_order_status, "未处理");
-                helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
-                break;
-            //已完成
-            case Order.ORDER_FINISHED:
-                helper.setText(R.id.tv_order_status, "已完成");
-                helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_37c4a4));
-                break;
-            //已取消
-            case Order.ORDER_CANCELED:
-                helper.setText(R.id.tv_order_status, "已取消");
-                helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff552e));
-                break;
-            //待退款
-            case Order.ORDER_WAIT_REFUND:
-                helper.setText(R.id.tv_order_status, "待退款");
-                helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
-                break;
+        //退款
+        if (p == 4) {
+            helper.setText(R.id.tv_order_status, "退款");
+            helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+        } else {
+            switch (data.orderStatus) {
+                //未处理
+                case Order.ORDER_NO_HANDLE:
+                case Order.ORDER_NO_HANDLE2:
+                    helper.setText(R.id.tv_order_status, "未处理");
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    break;
+                //已完成
+                case Order.ORDER_FINISHED:
+                    helper.setText(R.id.tv_order_status, "已完成");
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_37c4a4));
+                    break;
+                //已取消
+                case Order.ORDER_CANCELED:
+                    helper.setText(R.id.tv_order_status, "已取消");
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff552e));
+                    break;
+                //退款失败
+                case Order.ORDER_REFUND_FAIL:
+                    helper.setText(R.id.tv_order_status, "退款");
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    break;
+                //退款成功
+                case Order.ORDER_REFUND_SUCCESS:
+                    helper.setText(R.id.tv_order_status, "退款");
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    break;
+                //拒绝退款
+                case Order.ORDER_REFUSE_REFUND:
+                    helper.setText(R.id.tv_order_status, "退款");
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    break;
+                //待退款
+                case Order.ORDER_WAIT_REFUND:
+                    helper.setText(R.id.tv_order_status, "退款");
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    break;
+            }
         }
-
         String paymentMethod = data.paymentMethod;
         if (!TextUtils.isEmpty(paymentMethod)) {
             //在线支付

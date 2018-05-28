@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.yaoxiaoer.mendian.App;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.ui.dialog.LoadingDialog;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
+
 import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.yokeyword.fragmentation.SupportActivity;
@@ -178,6 +182,17 @@ public abstract class BaseActivity<P extends IPresenter> extends SupportActivity
      */
     protected void jumpActivityForResult(int requestCode, Class cls) {
         Intent intent = new Intent(this, cls);
+        startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * activity 跳转
+     *
+     * @param cls
+     */
+    protected void jumpActivityForResult(int requestCode, Bundle bundle, Class cls) {
+        Intent intent = new Intent(this, cls);
+        intent.putExtras(bundle);
         startActivityForResult(intent, requestCode);
     }
 }

@@ -51,9 +51,30 @@ public class Order {
      */
     public static final int ORDER_CANCELED = 4;
     /**
+     * 退款
+     */
+    public static final int ORDER_REFUND = 100;
+
+    /**
+     * 拒绝退款
+     */
+    public static final int ORDER_REFUSE_REFUND = 13;
+
+    /**
      * 待退款
      */
     public static final int ORDER_WAIT_REFUND = 15;
+
+    /**
+     * 退款成功
+     */
+    public static final int ORDER_REFUND_SUCCESS = 18;
+
+    /**
+     * 退款失败
+     */
+    public static final int ORDER_REFUND_FAIL = 20;
+
 
     /**
      * 快速支付（门店自有）
