@@ -180,10 +180,8 @@ public class OrderFragment extends BaseFragment {
         super.onResume();
         if (isOrderStatusChange) {
             int currentItem = vp.getCurrentItem();
-            if (currentItem == 0 || currentItem == 1) {
-                if (viewPagerAdapter != null) {
-                    ((OrderChildFragment) viewPagerAdapter.getItem(currentItem)).refreshOrder();
-                }
+            if (viewPagerAdapter != null) {
+                ((OrderChildFragment) viewPagerAdapter.getItem(currentItem)).refreshOrder(false);
             }
             isOrderStatusChange = false;
         }

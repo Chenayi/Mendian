@@ -23,6 +23,7 @@ import com.yaoxiaoer.mendian.mvp.entity.OrderDetailEntity;
 import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
 import com.yaoxiaoer.mendian.mvp.presenter.OrderDetailPresenter;
+import com.yaoxiaoer.mendian.ui.dialog.InputRefundPwdDialog;
 import com.yaoxiaoer.mendian.ui.dialog.TipsDialog;
 import com.yaoxiaoer.mendian.utils.Order;
 
@@ -61,6 +62,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     private TextView tvPayCountMoney;
     private LinearLayout llPayType;
     private TextView tvPayType;
+    private LinearLayout llRefundTips;
 
     private int mOrderId;
     private int mOrderStatus;
@@ -107,6 +109,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         foot = getHeaderOrFooterView(false, R.layout.foot_order_detail);
         tvOrderCode = header1.findViewById(R.id.tv_order_code);
         tvOrderSource = header1.findViewById(R.id.tv_order_source);
+        llRefundTips = header1.findViewById(R.id.ll_refund_tips);
         tvPayWay = header1.findViewById(R.id.tv_pay_way);
         tvDistributionType = header1.findViewById(R.id.tv_distributionType);
         tvCusName = header1.findViewById(R.id.tv_cus_name);
@@ -180,9 +183,7 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         switch (v.getId()) {
             case R.id.btn_left:
                 //确认退款
-                bundle = new Bundle();
-                bundle.putString("orderId", mOrderId + "");
-                jumpActivityForResult(122, bundle, InputRefundPwdActivity.class);
+                showPwdDialog();
                 break;
             case R.id.btn_right:
                 if (mOrderStatus == Order.ORDER_NO_HANDLE || mOrderStatus == Order.ORDER_NO_HANDLE2
@@ -191,30 +192,48 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
                 }
                 //拒绝退款
                 else if (mOrderStatus == Order.ORDER_WAIT_REFUND || mOrderStatus == Order.ORDER_REFUND_FAIL) {
-                    bundle = new Bundle();
-                    bundle.putString("orderId", mOrderId + "");
-                    bundle.putBoolean("isRefuse", true);
-                    jumpActivityForResult(122, bundle, InputRefundPwdActivity.class);
+                    showRefuseRefundTipsDialog();
                 }
                 break;
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //退款成功
-        if (requestCode == 122 && resultCode == RESULT_OK) {
-            mOrderStatus = Order.ORDER_REFUND_SUCCESS;
-            orderRefundSuccess();
-            EventBus.getDefault().post(new OrderStatusChangeEvent());
-        }
-        //拒绝退款
-        else if (requestCode == 122 && resultCode == 222) {
-            mOrderStatus = Order.ORDER_REFUSE_REFUND;
-            orderWaitPickup();
-            EventBus.getDefault().post(new OrderStatusChangeEvent());
-        }
+    /**
+     * 弹出输入密码对话框
+     */
+    private void showPwdDialog() {
+        InputRefundPwdDialog.newInstance()
+                .setOnPasswordConfigListener(new InputRefundPwdDialog.onPasswordConfigListener() {
+                    @Override
+                    public void onSure(String pwd) {
+                        mPresenter.subRefund(mOrderId + "", pwd);
+                    }
+                })
+                .setMargin(30)
+                .show(getSupportFragmentManager());
+    }
+
+    /**
+     * 弹出确认拒绝退款对话框
+     */
+    private void showRefuseRefundTipsDialog() {
+        TipsDialog.newInstance("注意说明",
+                "是否确认拒绝该订单的退款申请？",
+                ContextCompat.getColor(this, R.color.color_ff9600),
+                "是",
+                "否")
+                .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
+                    @Override
+                    public void onSure() {
+                        mPresenter.refuseRefund(mOrderId + "");
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                })
+                .show(getSupportFragmentManager());
     }
 
     /**
@@ -302,6 +321,8 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
         tvAddress.setText(TextUtils.isEmpty(orderDetail.storeAddress) ? "无" : orderDetail.storeAddress);
         //订单状态
         mOrderStatus = orderDetail.orderStatus;
+        llRefundTips.setVisibility(mOrderStatus == Order.ORDER_WAIT_REFUND || mOrderStatus == Order.ORDER_REFUND_FAIL
+                ? View.VISIBLE : View.GONE);
         switch (mOrderStatus) {
             //未处理
             case Order.ORDER_NO_HANDLE:
@@ -386,9 +407,9 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     private void orderRefundSuccess() {
         llBottom.setVisibility(View.GONE);
         tvOrderStatus.setVisibility(View.VISIBLE);
-        tvOrderStatus.setText("订单退款成功");
-        tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
-        tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.red));
+        tvOrderStatus.setText("退款成功");
+        tvOrderStatus.setBackgroundColor(ContextCompat.getColor(this, R.color.color_ff552e));
+        tvPayCountMoney.setTextColor(ContextCompat.getColor(this, R.color.color_ff552e));
         if (!TextUtils.isEmpty(mPayType)) {
             llPayType.setVisibility(View.VISIBLE);
             setPayType(mPayType);
@@ -444,5 +465,37 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     @Override
     public void onSelfDeliveryError(int code, String msg) {
         ToastUtils.showShort(msg);
+    }
+
+    /**
+     * 退款审核中
+     */
+    @Override
+    public void verifying() {
+
+    }
+
+    /**
+     * 退款成功
+     */
+    @Override
+    public void refundSuccess() {
+        ToastUtils.showLong("已成功退款");
+        mOrderStatus = Order.ORDER_REFUND_SUCCESS;
+        orderRefundSuccess();
+        llRefundTips.setVisibility(View.GONE);
+        EventBus.getDefault().post(new OrderStatusChangeEvent());
+    }
+
+    /**
+     * 拒绝退款成功
+     */
+    @Override
+    public void refuseRefundSuccess() {
+        ToastUtils.showLong("已拒绝退款");
+        mOrderStatus = Order.ORDER_REFUSE_REFUND;
+        orderWaitPickup();
+        llRefundTips.setVisibility(View.GONE);
+        EventBus.getDefault().post(new OrderStatusChangeEvent());
     }
 }

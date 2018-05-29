@@ -49,4 +49,8 @@ public class Utils {
         }
         return date;
     }
+
+    public static String getEncodePwdKey(String refundPwdkey) {
+        return EncryptUtils.encryptMD5ToString("@#$@" + refundPwdkey).toLowerCase();
+    }
 }

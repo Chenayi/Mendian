@@ -10,5 +10,14 @@ import com.yaoxiaoer.mendian.mvp.entity.AccountDetailEntity;
 public interface AccountDetailContract {
     interface View extends IView {
         void showAccountDetail(AccountDetailEntity.Detail detail);
+        /**
+         * 审核中
+         */
+        void verifying();
+
+        /**
+         * 退款成功
+         */
+        void refundSuccess();
     }
 }

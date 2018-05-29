@@ -14,7 +14,7 @@ import com.yaoxiaoer.mendian.base.BaseListFragment;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerAccountComponent;
 import com.yaoxiaoer.mendian.di.module.AccountModule;
-import com.yaoxiaoer.mendian.event.BackToAccountsEvent;
+import com.yaoxiaoer.mendian.event.AccountsRefundSuccessEvent;
 import com.yaoxiaoer.mendian.mvp.contract.AccountContract;
 import com.yaoxiaoer.mendian.mvp.entity.AccountEntity;
 import com.yaoxiaoer.mendian.mvp.entity.CashierEntity;
@@ -213,7 +213,7 @@ public class AccountsFragment extends BaseListFragment<AccountPresenter, Account
         helper.setGone(R.id.tv_refund_status, orderStatus == 18);
         //退款成功
         if (orderStatus == 18) {
-            helper.setText(R.id.tv_refund_status, "退款成功");
+            helper.setText(R.id.tv_refund_status, "转入退款");
         }
     }
 
@@ -283,8 +283,13 @@ public class AccountsFragment extends BaseListFragment<AccountPresenter, Account
         return true;
     }
 
+    /**
+     * 账单退款成功
+     *
+     * @param accountsRefundSuccessEvent
+     */
     @Subscribe
-    public void backToAccounts(BackToAccountsEvent backToAccountsEvent) {
+    public void accountsRefundSuccess(AccountsRefundSuccessEvent accountsRefundSuccessEvent) {
         resetWithRefresh(false);
     }
 }

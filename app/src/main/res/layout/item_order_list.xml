@@ -87,8 +87,8 @@
                     tools:text="在线支付"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:textColor="@color/color_333"
+                    android:layout_marginLeft="11dp"
+                    android:textColor="@color/color_8"
                     android:textSize="12sp"/>
             </LinearLayout>
 

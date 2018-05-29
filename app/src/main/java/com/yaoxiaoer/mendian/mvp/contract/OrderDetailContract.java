@@ -15,5 +15,20 @@ public interface OrderDetailContract {
         void selfDeliverySuccess(PayResultEntity payResultEntity);
 
         void onSelfDeliveryError(int code, String msg);
+
+        /**
+         * 审核中
+         */
+        void verifying();
+
+        /**
+         * 退款成功
+         */
+        void refundSuccess();
+
+        /**
+         * 拒绝退款成功
+         */
+        void refuseRefundSuccess();
     }
 }

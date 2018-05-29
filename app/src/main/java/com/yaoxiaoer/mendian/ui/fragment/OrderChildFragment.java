@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -16,7 +15,6 @@ import com.yaoxiaoer.mendian.base.BaseListFragment;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerOrderComponent;
 import com.yaoxiaoer.mendian.di.module.OrderModule;
-import com.yaoxiaoer.mendian.event.OrderStatusChangeEvent;
 import com.yaoxiaoer.mendian.mvp.contract.OrderContract;
 import com.yaoxiaoer.mendian.mvp.entity.OrderEntity;
 import com.yaoxiaoer.mendian.mvp.presenter.OrderPresenter;
@@ -119,8 +117,17 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
      * 刷新订单
      */
     public void refreshOrder() {
+        refreshOrder(true);
+    }
+
+    /**
+     * 刷新订单
+     */
+    public void refreshOrder(boolean isShowLoading) {
         if (isAcquired) {
-            startLoading();
+            if (isShowLoading) {
+                startLoading();
+            }
             hideEmptyView();
             clearAll();
             pageNo = 1;
@@ -170,10 +177,33 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
                 .setText(R.id.tv_order_price, "￥" + data.orderPrice)
                 .setGone(R.id.top_line, helper.getLayoutPosition() == 0);
 
+        String paymentMethod = data.paymentMethod;
+
         //退款
         if (p == 4) {
             helper.setText(R.id.tv_order_status, "退款");
-            helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+            switch (data.orderStatus) {
+                //退款失败
+                case Order.ORDER_REFUND_FAIL:
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    helper.setText(R.id.tv_payment_method, "退款失败");
+                    break;
+                //退款成功
+                case Order.ORDER_REFUND_SUCCESS:
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff552e));
+                    helper.setText(R.id.tv_payment_method, "退款成功");
+                    break;
+                //拒绝退款
+                case Order.ORDER_REFUSE_REFUND:
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    helper.setText(R.id.tv_payment_method, "拒绝退款");
+                    break;
+                //待退款
+                case Order.ORDER_WAIT_REFUND:
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    helper.setText(R.id.tv_payment_method, "退款中");
+                    break;
+            }
         } else {
             switch (data.orderStatus) {
                 //未处理
@@ -181,51 +211,73 @@ public class OrderChildFragment extends BaseListFragment<OrderPresenter, OrderEn
                 case Order.ORDER_NO_HANDLE2:
                     helper.setText(R.id.tv_order_status, "未处理");
                     helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    if (!TextUtils.isEmpty(paymentMethod)) {
+                        //在线支付
+                        if (paymentMethod.equals("1")) {
+                            helper.setText(R.id.tv_payment_method, "在线支付");
+                        }
+
+                        //到店支付
+                        else if (paymentMethod.equals("0")) {
+                            helper.setText(R.id.tv_payment_method, "到店支付");
+                        }
+                    }
                     break;
                 //已完成
                 case Order.ORDER_FINISHED:
                     helper.setText(R.id.tv_order_status, "已完成");
                     helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_37c4a4));
+                    if (!TextUtils.isEmpty(paymentMethod)) {
+                        //在线支付
+                        if (paymentMethod.equals("1")) {
+                            helper.setText(R.id.tv_payment_method, "在线支付");
+                        }
+
+                        //到店支付
+                        else if (paymentMethod.equals("0")) {
+                            helper.setText(R.id.tv_payment_method, "到店支付");
+                        }
+                    }
                     break;
                 //已取消
                 case Order.ORDER_CANCELED:
                     helper.setText(R.id.tv_order_status, "已取消");
                     helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff552e));
+                    if (!TextUtils.isEmpty(paymentMethod)) {
+                        //在线支付
+                        if (paymentMethod.equals("1")) {
+                            helper.setText(R.id.tv_payment_method, "在线支付");
+                        }
+                        //到店支付
+                        else if (paymentMethod.equals("0")) {
+                            helper.setText(R.id.tv_payment_method, "到店支付");
+                        }
+                    }
                     break;
                 //退款失败
                 case Order.ORDER_REFUND_FAIL:
                     helper.setText(R.id.tv_order_status, "退款");
-                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    helper.setText(R.id.tv_payment_method, "退款失败");
                     break;
                 //退款成功
                 case Order.ORDER_REFUND_SUCCESS:
                     helper.setText(R.id.tv_order_status, "退款");
-                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff552e));
+                    helper.setText(R.id.tv_payment_method, "退款成功");
                     break;
                 //拒绝退款
                 case Order.ORDER_REFUSE_REFUND:
                     helper.setText(R.id.tv_order_status, "退款");
-                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    helper.setText(R.id.tv_payment_method, "拒绝退款");
                     break;
                 //待退款
                 case Order.ORDER_WAIT_REFUND:
                     helper.setText(R.id.tv_order_status, "退款");
-                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.red));
+                    helper.setBackgroundColor(R.id.tv_order_status, ContextCompat.getColor(getContext(), R.color.color_ff9600));
+                    helper.setText(R.id.tv_payment_method, "退款中");
                     break;
-            }
-        }
-        String paymentMethod = data.paymentMethod;
-        if (!TextUtils.isEmpty(paymentMethod)) {
-            //在线支付
-            if (paymentMethod.equals("1")) {
-                helper.setText(R.id.tv_payment_method, "在线支付")
-                        .setTextColor(R.id.tv_payment_method, ContextCompat.getColor(getContext(), R.color.color_333));
-            }
-
-            //到店支付
-            else if (paymentMethod.equals("0")) {
-                helper.setText(R.id.tv_payment_method, "到店支付")
-                        .setTextColor(R.id.tv_payment_method, Color.RED);
             }
         }
     }

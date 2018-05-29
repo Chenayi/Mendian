@@ -70,7 +70,6 @@
         <activity android:name=".ui.activity.SelfDeliveryActivity" />
         <activity android:name=".ui.activity.AccountDetailActivity"/>
         <activity android:name=".ui.activity.ScanActivity" />
-        <activity android:name=".ui.activity.InputRefundPwdActivity"/>
 
         <receiver
             android:name=".receiver.PushReceiver"

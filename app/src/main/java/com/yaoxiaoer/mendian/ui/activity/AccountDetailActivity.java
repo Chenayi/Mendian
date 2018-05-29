@@ -12,11 +12,12 @@ import com.yaoxiaoer.mendian.base.BaseActivity;
 import com.yaoxiaoer.mendian.di.component.AppComponent;
 import com.yaoxiaoer.mendian.di.component.DaggerAccountDetailComponent;
 import com.yaoxiaoer.mendian.di.module.AccountDetailModule;
+import com.yaoxiaoer.mendian.event.AccountsRefundSuccessEvent;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
-import com.yaoxiaoer.mendian.event.BackToAccountsEvent;
 import com.yaoxiaoer.mendian.mvp.contract.AccountDetailContract;
 import com.yaoxiaoer.mendian.mvp.entity.AccountDetailEntity;
 import com.yaoxiaoer.mendian.mvp.presenter.AccountDetailPresenter;
+import com.yaoxiaoer.mendian.ui.dialog.InputRefundPwdDialog;
 import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.widget.RootLayout;
 
@@ -85,11 +86,21 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
                 .setOnRightOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("orderId", orderId);
-                        jumpActivity(bundle, InputRefundPwdActivity.class);
+                        showInputPwdDialog();
                     }
                 });
+    }
+
+    private void showInputPwdDialog() {
+        InputRefundPwdDialog.newInstance()
+                .setOnPasswordConfigListener(new InputRefundPwdDialog.onPasswordConfigListener() {
+                    @Override
+                    public void onSure(String pwd) {
+                        mPresenter.subRefund(orderId, pwd);
+                    }
+                })
+                .setMargin(30)
+                .show(getSupportFragmentManager());
     }
 
     @Override
@@ -171,6 +182,23 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
         tvMoney.setText("收款金额：￥" + detail.orderPrice);
     }
 
+    /**
+     * 退款审核中
+     */
+    @Override
+    public void verifying() {
+    }
+
+    /**
+     * 退款成功
+     */
+    @Override
+    public void refundSuccess() {
+        EventBus.getDefault().post(new AccountsRefundSuccessEvent());
+        ToastUtils.showLong("已成功退款");
+        finish();
+    }
+
     @Override
     protected boolean isLoadEventBus() {
         return true;
@@ -178,11 +206,6 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
 
     @Subscribe
     public void backHome(BackHomeEvent backHomeEvent) {
-        finish();
-    }
-
-    @Subscribe
-    public void backToAccounts(BackToAccountsEvent backToAccountsEvent) {
         finish();
     }
 }

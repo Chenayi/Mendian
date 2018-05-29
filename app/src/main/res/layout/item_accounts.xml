@@ -96,8 +96,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:textColor="@color/red"
-                    android:textSize="12sp"
+                    android:textColor="@color/color_8"
+                    android:textSize="11sp"
                     android:visibility="gone"
                     tools:text="退款审核中" />
             </LinearLayout>
@@ -112,7 +112,8 @@
                 android:singleLine="true"
                 android:text="张三"
                 android:textColor="@color/color_5"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
