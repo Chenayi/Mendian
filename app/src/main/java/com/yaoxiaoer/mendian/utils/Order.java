@@ -99,4 +99,9 @@ public class Order {
      * 固定二维码
      */
     public static final String TRIGGER_TYPE_FIXED_QRCODE = "2";
+
+    /**
+     * 公众号
+     */
+    public static final String TRIGGER_TYPE_PUBLIC_NUMBER = "3";
 }

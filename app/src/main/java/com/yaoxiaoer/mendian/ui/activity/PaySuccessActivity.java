@@ -118,6 +118,10 @@ public class PaySuccessActivity extends BaseActivity<PaySuccessPresenter> implem
             else if (triggerType.equals(Order.TRIGGER_TYPE_FIXED_QRCODE)) {
                 tvPayWay.setText("二维码");
             }
+            //3 公众号
+            else if (triggerType.equals(Order.TRIGGER_TYPE_PUBLIC_NUMBER)){
+                tvPayWay.setText("公众号");
+            }
         } else {
             tvPayWay.setText("二维码");
         }

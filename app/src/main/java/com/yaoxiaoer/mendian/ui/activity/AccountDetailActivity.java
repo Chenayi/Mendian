@@ -176,6 +176,10 @@ public class AccountDetailActivity extends BaseActivity<AccountDetailPresenter> 
             else if (triggerType.equals(Order.TRIGGER_TYPE_FIXED_QRCODE)) {
                 tvPayWay.setText("二维码");
             }
+            //3 公众号
+            else if (triggerType.equals(Order.TRIGGER_TYPE_PUBLIC_NUMBER)){
+                tvPayWay.setText("公众号");
+            }
         }
 
         //收款金额

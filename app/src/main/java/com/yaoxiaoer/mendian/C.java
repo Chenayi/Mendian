@@ -6,12 +6,12 @@ package com.yaoxiaoer.mendian;
 
 public class C {
     //内网1
-    public static final String BASE_URL = "http://192.168.40.91:8081/";
+//    public static final String BASE_URL = "http://192.168.40.91:8081/";
     //内网2
 //    public static final String BASE_URL = " http://192.168.60.233:8888/";
-    //外网
-//    public static final String BASE_URL = "http://183.6.163.226:8888";
-    //域名
+    //外网测试地址
+    public static final String BASE_URL = "http://183.6.163.226:8888/";
+    //域名正式地址
 //    public static final String BASE_URL = "http://zf.yxejk.cn";
 
     public static final int PAGE_SIZE = 15;
