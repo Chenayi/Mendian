@@ -7,13 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-
-import com.baidu.tts.client.SpeechSynthesizer;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.orhanobut.logger.Logger;
-import com.yaoxiaoer.mendian.BuildConfig;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.adapter.CommomViewPagerAdapter;
 import com.yaoxiaoer.mendian.base.BaseActivity;
@@ -24,6 +19,7 @@ import com.yaoxiaoer.mendian.event.AccountsFreeingEvent;
 import com.yaoxiaoer.mendian.event.BackHomeEvent;
 import com.yaoxiaoer.mendian.event.GatheringEvent;
 import com.yaoxiaoer.mendian.event.PushOrderEvent;
+import com.yaoxiaoer.mendian.event.PushRefundEvent;
 import com.yaoxiaoer.mendian.mvp.contract.MainContract;
 import com.yaoxiaoer.mendian.mvp.entity.ApkInfoEntity;
 import com.yaoxiaoer.mendian.mvp.presenter.MainPresenter;
@@ -39,11 +35,8 @@ import com.yinglan.keyboard.HideUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
@@ -171,8 +164,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     /**
      * 微商城退款
      */
-    public void onReceiveRefund(){
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveRefund(PushRefundEvent pushRefundEvent) {
+        //震动提醒
+        mPresenter.vibrator();
+        //语音播报
+        mPresenter.playSpeech("您有新的退款订单");
+        SPUtils.getInstance().put(C.NEW_ORDER, true);
+        addBadgeAt(1, -1);
     }
 
     /**

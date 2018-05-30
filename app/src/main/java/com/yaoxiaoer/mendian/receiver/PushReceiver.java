@@ -13,6 +13,7 @@ import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.event.AccountsFreeingEvent;
 import com.yaoxiaoer.mendian.event.GatheringEvent;
 import com.yaoxiaoer.mendian.event.PushOrderEvent;
+import com.yaoxiaoer.mendian.event.PushRefundEvent;
 import com.yaoxiaoer.mendian.mvp.entity.ReceiverEntity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,6 +45,11 @@ public class PushReceiver extends BroadcastReceiver {
      */
     private final String CODE_ACCOUNTS_FREEING_SINGLE_USER = "111";
 
+    /**
+     * 退款
+     */
+    private final String CODE_NEW_REFUND = "444";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         //收到自定义消息
@@ -59,6 +65,10 @@ public class PushReceiver extends BroadcastReceiver {
                     //收到新订单
                     if (entity.code.equals(CODE_NEW_ORDER)) {
                         EventBus.getDefault().post(new PushOrderEvent());
+                    }
+                    //退款
+                    else if (entity.code.equals(CODE_NEW_REFUND)){
+                        EventBus.getDefault().post(new PushRefundEvent());
                     }
                     //固定二维码收款
                     else if (entity.code.equals(FIXED_QRCODE_GATHERING)) {
