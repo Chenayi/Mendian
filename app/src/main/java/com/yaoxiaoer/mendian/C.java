@@ -10,9 +10,9 @@ public class C {
     //内网2
 //    public static final String BASE_URL = " http://192.168.60.233:8888/";
     //外网测试地址
-    public static final String BASE_URL = "http://183.6.163.226:8888/";
+//    public static final String BASE_URL = "http://183.6.163.226:8888/";
     //域名正式地址
-//    public static final String BASE_URL = "http://zf.yxejk.cn";
+    public static final String BASE_URL = "http://zf.yxejk.cn";
 
     public static final int PAGE_SIZE = 15;
     public static final String IS_LOGIN = "is_login";

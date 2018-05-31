@@ -28,7 +28,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
-        android:lineSpacingMultiplier="1.2"
+        android:lineSpacingMultiplier="1.4"
         android:text="您确定退出？"
         android:textColor="@color/color_5"
         android:textSize="16sp" />
@@ -41,7 +41,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:gravity="right"
         android:orientation="horizontal">
 
@@ -52,8 +52,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="确定"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:textColor="@color/color_5"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <View
             android:layout_width="1dp"
@@ -69,7 +70,8 @@
             android:gravity="center"
             android:text="取消"
             android:textColor="@color/color_5"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
 
     </LinearLayout>

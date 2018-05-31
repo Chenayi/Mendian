@@ -11,7 +11,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="请输入退款密码"
         android:textColor="@color/color_5"
@@ -36,7 +36,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:background="@color/color_eb" />
 
     <LinearLayout

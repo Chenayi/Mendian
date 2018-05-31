@@ -219,7 +219,6 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     private void showRefuseRefundTipsDialog() {
         TipsDialog.newInstance("注意说明",
                 "是否确认拒绝该订单的退款申请？",
-                ContextCompat.getColor(this, R.color.color_ff9600),
                 "是",
                 "否")
                 .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
@@ -242,7 +241,6 @@ public class OrderDetailActivity extends BaseTitleBarListActivity<OrderDetailPre
     private void showPickupTips() {
         TipsDialog.newInstance("注意说明",
                 "确认取货操作不可还原，请确认已收款并将商品交给用户！",
-                ContextCompat.getColor(this, R.color.color_ff9600),
                 "是",
                 "否")
                 .setOnTipsOnClickListener(new TipsDialog.OnTipsOnClickListener() {
