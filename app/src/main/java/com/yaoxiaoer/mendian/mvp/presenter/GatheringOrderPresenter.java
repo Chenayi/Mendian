@@ -36,6 +36,12 @@ public class GatheringOrderPresenter extends PayResultPresenter<GatheringOrderCo
         mView.scanPaySuccess(payResultEntity);
     }
 
+    @Override
+    public void payRevoked() {
+        ToastUtils.showShort("用户已取消支付");
+    }
+
+
     /**
      * 请求反扫收款结果
      *

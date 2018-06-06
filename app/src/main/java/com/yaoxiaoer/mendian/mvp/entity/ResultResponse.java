@@ -7,4 +7,9 @@ package com.yaoxiaoer.mendian.mvp.entity;
 public class ResultResponse {
     public int code;
     public String message;
+    public Data data;
+
+    public static class Data {
+        public String trade_state;
+    }
 }

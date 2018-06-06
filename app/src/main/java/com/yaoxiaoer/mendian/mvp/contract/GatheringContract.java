@@ -8,7 +8,7 @@ import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
  */
 
 public interface GatheringContract {
-    interface View extends IView{
+    interface View extends IView {
 
         void showLoadingNotBackDismiss();
 

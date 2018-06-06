@@ -2,6 +2,7 @@ package com.yaoxiaoer.mendian.http;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.orhanobut.logger.Logger;
@@ -50,7 +51,11 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
             onHandleError(C.CODE_CONNECT_EXCEPTION, mContext.getResources().getString(R.string.connect_fail));
         } else if (e instanceof ResultException) {
             ResultException resultException = (ResultException) e;
-            onHandleError(resultException.errorCode, resultException.errorMsg);
+            if (TextUtils.isEmpty(resultException.other)){
+                onHandleError(resultException.errorCode, resultException.errorMsg);
+            }else {
+                onHandleError(resultException.errorCode, resultException.errorMsg,resultException.other);
+            }
         } else {
             onHandleError(C.CODE_OTHER_EXCEPTION, e.getMessage());
         }
@@ -76,6 +81,11 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
      * @param msg
      */
     protected abstract void onHandleError(int code, String msg);
+
+    protected void onHandleError(int code, String msg, String other) {
+    }
+
+    ;
 
     /**
      * 成功或失败处理完后的回调

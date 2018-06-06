@@ -1,5 +1,7 @@
 package com.yaoxiaoer.mendian.http;
 
+import android.text.TextUtils;
+
 import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.yaoxiaoer.mendian.http.exception.NeedPayPwdException;
@@ -40,7 +42,14 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
             OrderIdEntity orderIdEntity = gson.fromJson(response, OrderIdEntity.class);
             throw new NeedPayPwdException(orderIdEntity.code, orderIdEntity.message, orderIdEntity.data.orderId);
         } else {
-            throw new ResultException(resultResponse.code, resultResponse.message);
+            ResultResponse.Data data = resultResponse.data;
+            if (null != data && !TextUtils.isEmpty(data.trade_state)) {
+                String tradeState = data.trade_state;
+                throw new ResultException(resultResponse.code, resultResponse.message, tradeState);
+            } else {
+                throw new ResultException(resultResponse.code, resultResponse.message);
+            }
+
         }
     }
 }

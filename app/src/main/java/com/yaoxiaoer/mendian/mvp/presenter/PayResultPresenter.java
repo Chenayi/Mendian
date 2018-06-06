@@ -1,7 +1,9 @@
 package com.yaoxiaoer.mendian.mvp.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.orhanobut.logger.Logger;
 import com.yaoxiaoer.mendian.base.BasePresenter;
 import com.yaoxiaoer.mendian.base.IView;
 import com.yaoxiaoer.mendian.http.BaseObserver;
@@ -14,7 +16,9 @@ import com.yaoxiaoer.mendian.mvp.entity.PayResultEntity;
 import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.utils.Order;
 import com.yaoxiaoer.mendian.utils.Utils;
+
 import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -44,7 +48,7 @@ public abstract class PayResultPresenter<V extends IView> extends BasePresenter<
                     }
 
                     @Override
-                    public void onNext(Long aLong) {
+                    public void onNext(final Long aLong) {
                         mHttpManager.obtainRetrofitService(ApiService.class)
                                 .queryOrderPay(C.USER_ID, Utils.getEncryptRadomNum(), orderId)
                                 .compose(RxScheduler.<BaseResponse<PayResultEntity>>compose())
@@ -70,6 +74,16 @@ public abstract class PayResultPresenter<V extends IView> extends BasePresenter<
                                     }
 
                                     @Override
+                                    protected void onHandleError(int code, String msg, String other) {
+                                        if (!TextUtils.isEmpty(other)
+                                                && (other.equals("NOTPAY") || other.equals("REVOKED"))) {
+                                            mView.hideLoading();
+                                            payRevoked();
+                                            disposable();
+                                        }
+                                    }
+
+                                    @Override
                                     protected void onHandleAfter() {
                                     }
                                 });
@@ -88,9 +102,9 @@ public abstract class PayResultPresenter<V extends IView> extends BasePresenter<
     /**
      * 触发此接口让后台开始轮询支付结果
      */
-    public void timequeryOrderpayOrnot(String orderId){
+    public void timequeryOrderpayOrnot(String orderId) {
         mHttpManager.obtainRetrofitService(ApiService.class)
-                .timequeryOrderpayOrnot(orderId,C.USER_ID)
+                .timequeryOrderpayOrnot(orderId, C.USER_ID)
                 .compose(RxScheduler.<BaseResponse<NullEntity>>compose())
                 .subscribe(new Observer<BaseResponse<NullEntity>>() {
                     @Override
@@ -114,4 +128,9 @@ public abstract class PayResultPresenter<V extends IView> extends BasePresenter<
     }
 
     public abstract void paySuccess(PayResultEntity payResultEntity);
+
+    /**
+     * 撤销支付
+     */
+    public abstract void payRevoked();
 }

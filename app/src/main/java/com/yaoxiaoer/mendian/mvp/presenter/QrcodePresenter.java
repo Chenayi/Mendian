@@ -3,6 +3,7 @@ package com.yaoxiaoer.mendian.mvp.presenter;
 import android.content.Context;
 
 import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.yaoxiaoer.mendian.di.scope.ActivityScope;
 import com.yaoxiaoer.mendian.http.BaseObserver;
 import com.yaoxiaoer.mendian.http.HttpManager;
@@ -34,6 +35,12 @@ public class QrcodePresenter extends PayResultPresenter<QrcodeContract.View> {
     public void paySuccess(PayResultEntity payResultEntity) {
         mView.paySuccess(payResultEntity);
     }
+
+    @Override
+    public void payRevoked() {
+        ToastUtils.showShort("用户已取消支付");
+    }
+
 
     /**
      * 获取收款二维码
