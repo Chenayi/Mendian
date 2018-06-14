@@ -22,8 +22,11 @@ public class C {
 
 
     //百度语音合成
+    //旧的appid：11149254
     public static final String BAIDU_SPEECH_APP_ID = "11395873";
+    //旧的apikey：R9SkKAjFlBAo9GGi7P962YiW
     public static final String BAIDU_SPEECH_API_KEY = "syjDcSR1gvGv95XhiBV9c9yG";
+    //旧的secretkey：d770298903dbddab367e4e71346feced
     public static final String BAIDU_SPEECH_SECRET_KEY = "9RMcKLa5s5WpviFytODDUGZxeae7RsmC";
 
 
