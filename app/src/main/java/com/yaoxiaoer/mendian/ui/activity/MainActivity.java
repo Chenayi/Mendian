@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+
 import com.blankj.utilcode.util.SPUtils;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.orhanobut.logger.Logger;
 import com.yaoxiaoer.mendian.R;
 import com.yaoxiaoer.mendian.adapter.CommomViewPagerAdapter;
 import com.yaoxiaoer.mendian.base.BaseActivity;
@@ -35,6 +37,7 @@ import com.yinglan.keyboard.HideUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,6 +124,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         }
 
         mPresenter.checkUpgrade();
+
+        Logger.e("storeId ===> " + C.STORE_ID);
     }
 
     private void initBottomBar() {

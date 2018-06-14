@@ -4,6 +4,7 @@ import android.content.Context;
 
 
 import com.baidu.tts.client.SpeechSynthesizer;
+import com.yaoxiaoer.mendian.C;
 import com.yaoxiaoer.mendian.http.HttpManager;
 
 import javax.inject.Singleton;
@@ -39,8 +40,8 @@ public class AppModule {
     SpeechSynthesizer provideSpeechSynthesizer(Context context) {
         SpeechSynthesizer mySynthesizer = SpeechSynthesizer.getInstance();
         mySynthesizer.setContext(context);
-        mySynthesizer.setAppId("11149254");
-        mySynthesizer.setApiKey("R9SkKAjFlBAo9GGi7P962YiW", "d770298903dbddab367e4e71346feced");
+        mySynthesizer.setAppId(C.BAIDU_SPEECH_APP_ID);
+        mySynthesizer.setApiKey(C.BAIDU_SPEECH_API_KEY, C.BAIDU_SPEECH_SECRET_KEY);
         return mySynthesizer;
     }
 

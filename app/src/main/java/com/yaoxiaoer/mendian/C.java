@@ -6,17 +6,26 @@ package com.yaoxiaoer.mendian;
 
 public class C {
     //内网1
-    public static final String BASE_URL = "http://192.168.40.91:8081/";
+//    public static final String BASE_URL = "http://192.168.40.91:8081/";
+//    public static final String BASE_URL = "http://1x7448h712.iok.la/";
+//    public static final String BASE_URL = "http://192.168.40.82:8080/";
     //内网2
 //    public static final String BASE_URL = " http://192.168.60.233:8888/";
     //外网测试地址
-//    public static final String BASE_URL = "http://183.6.163.226:8888/";
+    public static final String BASE_URL = "http://183.6.163.226:8888/";
     //域名正式地址
 //    public static final String BASE_URL = "http://zf.yxejk.cn";
 
     public static final int PAGE_SIZE = 15;
     public static final String IS_LOGIN = "is_login";
     public static final String NEW_ORDER = "new_order";
+
+
+    //百度语音合成
+    public static final String BAIDU_SPEECH_APP_ID = "11395873";
+    public static final String BAIDU_SPEECH_API_KEY = "syjDcSR1gvGv95XhiBV9c9yG";
+    public static final String BAIDU_SPEECH_SECRET_KEY = "9RMcKLa5s5WpviFytODDUGZxeae7RsmC";
+
 
     public static String RADOM_NUM;
     public static int USER_ID;
