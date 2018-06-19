@@ -38,7 +38,7 @@ public abstract class DelayFinishPresenter<V extends IView> extends BasePresente
                     }
                 })
                 .take(countTime + 2)
-               .compose(RxScheduler.<Integer>compose())
+                .compose(RxScheduler.<Integer>compose())
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {

@@ -25,7 +25,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:textColor="@color/colorPrimary"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:text="合计0笔" />
 
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:textColor="@color/colorPrimary"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:text="总计0元" />
     </LinearLayout>
